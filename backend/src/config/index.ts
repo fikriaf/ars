@@ -24,6 +24,13 @@ export const config = {
   
   heliusApiKey: process.env.HELIUS_API_KEY || '',
   
+  helius: {
+    apiKey: process.env.HELIUS_API_KEY || '',
+    rpcUrl: process.env.HELIUS_RPC_URL || 'https://mainnet.helius-rpc.com',
+    senderRegion: process.env.HELIUS_SENDER_REGION || 'sg', // Singapore for Asia-Pacific
+    useSWQOSOnly: process.env.HELIUS_SWQOS_ONLY === 'true',
+  },
+  
   oracles: {
     pythProgramId: process.env.PYTH_PROGRAM_ID || 'gSbePebfvPy7tRqimPoVecS2UsBvYv46ynrzWocc92s',
     switchboardProgramId: process.env.SWITCHBOARD_PROGRAM_ID || 'SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f',
