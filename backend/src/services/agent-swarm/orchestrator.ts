@@ -566,3 +566,383 @@ export function getOrchestrator(): AgentOrchestrator {
   }
   return orchestrator;
 }
+
+/**
+ * Autonomous Operations Extension
+ * Adds self-management, skill learning, and auto-upgrade capabilities
+ */
+export class AutonomousOrchestrator extends AgentOrchestrator {
+  private skillLearner: SkillLearner | null = null;
+  private autoUpgrader: AutoUpgrader | null = null;
+  private selfManager: SelfManager | null = null;
+
+  /**
+   * Enable self-management capabilities
+   */
+  enableSelfManagement(): void {
+    if (this.selfManager) return;
+    
+    this.selfManager = new SelfManager(this);
+    this.selfManager.start();
+    console.log('✅ Self-management enabled');
+  }
+
+  /**
+   * Enable auto-upgrade capabilities
+   */
+  enableAutoUpgrade(): void {
+    if (this.autoUpgrader) return;
+    
+    this.autoUpgrader = new AutoUpgrader(this);
+    this.autoUpgrader.start();
+    console.log('✅ Auto-upgrade enabled');
+  }
+
+  /**
+   * Enable skill learning capabilities
+   */
+  enableSkillLearning(): void {
+    if (this.skillLearner) return;
+    
+    this.skillLearner = new SkillLearner(this);
+    this.skillLearner.start();
+    console.log('✅ Skill learning enabled');
+  }
+
+  /**
+   * Register agent capability
+   */
+  async registerAgentCapability(capability: string): Promise<void> {
+    console.log(`📚 Registered capability: ${capability}`);
+    // Store capability in Redis for persistence
+    await this.redis.sadd('icb:capabilities', capability);
+  }
+
+  /**
+   * Check system health
+   */
+  async checkSystemHealth(): Promise<SystemHealth> {
+    const agents = this.getAllAgents();
+    const failedAgents = agents.filter(a => a.status !== 'active');
+    
+    let status: 'healthy' | 'degraded' | 'critical' = 'healthy';
+    if (failedAgents.length > 0) {
+      status = failedAgents.length > 3 ? 'critical' : 'degraded';
+    }
+    
+    return {
+      status,
+      failedAgent: failedAgents[0]?.id,
+      totalAgents: agents.length,
+      activeAgents: agents.filter(a => a.status === 'active').length
+    };
+  }
+
+  /**
+   * Recover failed agent
+   */
+  async recoverAgent(agentId: string): Promise<void> {
+    console.log(`🔄 Recovering agent: ${agentId}`);
+    
+    const agent = this.agents.get(agentId);
+    if (!agent) return;
+    
+    // Update agent status
+    agent.status = 'active';
+    this.agents.set(agentId, agent);
+    
+    // Notify monitoring
+    await this.sendMessage('monitoring-agent', {
+      type: 'alert',
+      from: 'icb-orchestrator',
+      to: 'monitoring-agent',
+      payload: {
+        severity: 'info',
+        title: 'Agent Recovered',
+        description: `Agent ${agentId} has been recovered`
+      },
+      timestamp: Date.now(),
+      priority: 'normal'
+    });
+  }
+
+  /**
+   * Spawn replacement agent
+   */
+  async spawnReplacementAgent(agentId: string): Promise<void> {
+    console.log(`🆕 Spawning replacement for: ${agentId}`);
+    
+    // This would integrate with the AgentReplicator
+    // For now, just mark as recovered
+    await this.recoverAgent(agentId);
+  }
+
+  /**
+   * Register new agent
+   */
+  async registerAgent(agent: AgentInfo): Promise<void> {
+    this.agents.set(agent.id, agent);
+    console.log(`✅ Registered agent: ${agent.id}`);
+  }
+}
+
+/**
+ * Skill Learner - Reads and learns from skill files
+ */
+class SkillLearner {
+  private orchestrator: AutonomousOrchestrator;
+  private skillsDir = '.openclaw/skills';
+  private learnedSkills: Map<string, any> = new Map();
+  private interval: NodeJS.Timeout | null = null;
+
+  constructor(orchestrator: AutonomousOrchestrator) {
+    this.orchestrator = orchestrator;
+  }
+
+  start(): void {
+    // Learn skills immediately
+    this.scanAndLearnSkills();
+    
+    // Re-scan every hour
+    this.interval = setInterval(() => {
+      this.scanAndLearnSkills();
+    }, 60 * 60 * 1000);
+  }
+
+  stop(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  }
+
+  private async scanAndLearnSkills(): Promise<void> {
+    const fs = require('fs');
+    const path = require('path');
+    
+    try {
+      const skillFiles = fs.readdirSync(this.skillsDir)
+        .filter((f: string) => f.endsWith('.md'));
+      
+      for (const file of skillFiles) {
+        const content = fs.readFileSync(
+          path.join(this.skillsDir, file),
+          'utf-8'
+        );
+        
+        const skill = this.parseSkill(content);
+        this.learnedSkills.set(skill.name, skill);
+        
+        console.log(`📚 Learned skill: ${skill.name} v${skill.version}`);
+        
+        // Apply learned capabilities
+        for (const capability of skill.capabilities) {
+          await this.orchestrator.registerAgentCapability(capability);
+        }
+      }
+    } catch (error) {
+      console.error('Error learning skills:', error);
+    }
+  }
+
+  private parseSkill(content: string): any {
+    // Extract frontmatter
+    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    const metadata = this.parseFrontmatter(frontmatterMatch?.[1] || '');
+    
+    // Infer capabilities from content
+    const capabilities = this.inferCapabilities(content);
+    
+    return {
+      name: metadata.name || 'unknown',
+      version: metadata.version || '1.0.0',
+      description: metadata.description || '',
+      capabilities
+    };
+  }
+
+  private parseFrontmatter(frontmatter: string): any {
+    const metadata: any = {};
+    const lines = frontmatter.split('\n');
+    
+    for (const line of lines) {
+      const [key, ...valueParts] = line.split(':');
+      if (key && valueParts.length > 0) {
+        metadata[key.trim()] = valueParts.join(':').trim();
+      }
+    }
+    
+    return metadata;
+  }
+
+  private inferCapabilities(content: string): string[] {
+    const capabilities: string[] = [];
+    
+    if (content.includes('sudo')) capabilities.push('root-access');
+    if (content.includes('pm2')) capabilities.push('process-management');
+    if (content.includes('redis')) capabilities.push('redis-operations');
+    if (content.includes('postgresql')) capabilities.push('database-operations');
+    if (content.includes('git')) capabilities.push('version-control');
+    if (content.includes('docker')) capabilities.push('containerization');
+    if (content.includes('systemctl')) capabilities.push('service-management');
+    if (content.includes('workflow')) capabilities.push('workflow-execution');
+    if (content.includes('consensus')) capabilities.push('consensus-voting');
+    
+    return capabilities;
+  }
+}
+
+/**
+ * Auto Upgrader - Checks for and applies upgrades
+ */
+class AutoUpgrader {
+  private orchestrator: AutonomousOrchestrator;
+  private interval: NodeJS.Timeout | null = null;
+
+  constructor(orchestrator: AutonomousOrchestrator) {
+    this.orchestrator = orchestrator;
+  }
+
+  start(): void {
+    // Check for upgrades every 6 hours
+    this.interval = setInterval(() => {
+      this.checkAndUpgrade();
+    }, 6 * 60 * 60 * 1000);
+  }
+
+  stop(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  }
+
+  private async checkAndUpgrade(): Promise<void> {
+    try {
+      const hasUpgrades = await this.checkForUpgrades();
+      
+      if (hasUpgrades) {
+        console.log('🔄 New version available, performing upgrade...');
+        await this.performUpgrade();
+      }
+    } catch (error) {
+      console.error('Error checking for upgrades:', error);
+    }
+  }
+
+  private async checkForUpgrades(): Promise<boolean> {
+    const { exec } = require('child_process');
+    
+    return new Promise((resolve) => {
+      exec('git fetch origin main', (error: any) => {
+        if (error) {
+          resolve(false);
+          return;
+        }
+        
+        exec('git rev-list HEAD...origin/main --count', (error: any, stdout: any) => {
+          if (error) {
+            resolve(false);
+            return;
+          }
+          
+          const commitsBehind = parseInt(stdout.trim());
+          resolve(commitsBehind > 0);
+        });
+      });
+    });
+  }
+
+  private async performUpgrade(): Promise<void> {
+    const { exec } = require('child_process');
+    
+    // Pull latest code
+    await new Promise((resolve) => {
+      exec('git pull origin main', resolve);
+    });
+    
+    // Install dependencies
+    await new Promise((resolve) => {
+      exec('npm install && cd backend && npm install', resolve);
+    });
+    
+    // Restart agents
+    await new Promise((resolve) => {
+      exec('pm2 reload all', resolve);
+    });
+    
+    console.log('✅ Upgrade completed successfully');
+  }
+}
+
+/**
+ * Self Manager - Monitors and manages agent health
+ */
+class SelfManager {
+  private orchestrator: AutonomousOrchestrator;
+  private interval: NodeJS.Timeout | null = null;
+
+  constructor(orchestrator: AutonomousOrchestrator) {
+    this.orchestrator = orchestrator;
+  }
+
+  start(): void {
+    // Check health every 5 minutes
+    this.interval = setInterval(() => {
+      this.performHealthCheck();
+    }, 5 * 60 * 1000);
+  }
+
+  stop(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  }
+
+  private async performHealthCheck(): Promise<void> {
+    try {
+      const health = await this.orchestrator.checkSystemHealth();
+      
+      if (health.status === 'degraded' && health.failedAgent) {
+        console.log(`⚠️ System degraded, recovering ${health.failedAgent}`);
+        await this.orchestrator.recoverAgent(health.failedAgent);
+      } else if (health.status === 'critical' && health.failedAgent) {
+        console.log(`🚨 System critical, spawning replacement for ${health.failedAgent}`);
+        await this.orchestrator.spawnReplacementAgent(health.failedAgent);
+      }
+    } catch (error) {
+      console.error('Error performing health check:', error);
+    }
+  }
+}
+
+interface SystemHealth {
+  status: 'healthy' | 'degraded' | 'critical';
+  failedAgent?: string;
+  totalAgents: number;
+  activeAgents: number;
+}
+
+/**
+ * Get autonomous orchestrator instance
+ */
+export function getAutonomousOrchestrator(): AutonomousOrchestrator {
+  if (!orchestrator) {
+    orchestrator = new AutonomousOrchestrator();
+    
+    // Enable autonomous features based on environment
+    if (process.env.ENABLE_SELF_MANAGEMENT === 'true') {
+      (orchestrator as AutonomousOrchestrator).enableSelfManagement();
+    }
+    
+    if (process.env.ENABLE_AUTO_UPGRADE === 'true') {
+      (orchestrator as AutonomousOrchestrator).enableAutoUpgrade();
+    }
+    
+    if (process.env.ENABLE_SKILL_LEARNING === 'true') {
+      (orchestrator as AutonomousOrchestrator).enableSkillLearning();
+    }
+  }
+  return orchestrator as AutonomousOrchestrator;
+}

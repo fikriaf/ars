@@ -257,7 +257,51 @@ ICB is designed to win the "Most Agentic" prize:
    solana-keygen new --outfile ~/.config/solana/id.json
    ```
 
-### Deployment
+### Deployment Options
+
+#### Option 1: VPS Deployment (Fully Autonomous)
+
+Deploy to your own VPS with full autonomous agent capabilities:
+
+```bash
+# On your VPS (Ubuntu 20.04+)
+wget https://raw.githubusercontent.com/protocoldaemon-sec/internet-capital-bank/main/scripts/autonomous-deploy.sh
+chmod +x autonomous-deploy.sh
+./autonomous-deploy.sh
+```
+
+**Features:**
+- ✅ Fully autonomous agent operations
+- ✅ Self-management and auto-recovery
+- ✅ Skill-based learning from `.openclaw/skills/`
+- ✅ Auto-upgrade from GitHub
+- ✅ Root access for system operations
+- ✅ PM2 process management
+- ✅ Nginx reverse proxy
+- ✅ PostgreSQL + Redis setup
+
+**Access:** `http://YOUR_VPS_IP`
+
+For detailed VPS deployment, see [.openclaw/skills/autonomous-operations.md](./.openclaw/skills/autonomous-operations.md)
+
+#### Option 2: Railway Deployment (Managed)
+
+Deploy to Railway for managed hosting:
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login to Railway
+railway login
+
+# Deploy
+railway up
+```
+
+For detailed Railway deployment, see [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)
+
+#### Option 3: Local Development
 
 ```bash
 # Clone repository
