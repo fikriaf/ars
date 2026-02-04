@@ -22,3 +22,4 @@ anchor-spl = { workspace = true }
 [dev-dependencies]
 solana-program-test = "1.18"
 solana-sdk = "1.18"
+proptest = "1.4"

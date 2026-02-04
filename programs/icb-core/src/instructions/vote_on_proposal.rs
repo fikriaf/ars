@@ -74,15 +74,17 @@ pub fn handler(
     );
     
     // Update proposal stakes with quadratic staking
-    // For simplicity, using linear staking in MVP
-    // TODO: Implement quadratic staking formula
+    // Quadratic staking formula: voting_power = sqrt(stake_amount)
+    // This prevents whale dominance and encourages broader participation
+    let voting_power = (stake_amount as f64).sqrt() as u64;
+    
     if prediction {
         proposal.yes_stake = proposal.yes_stake
-            .checked_add(stake_amount)
+            .checked_add(voting_power)
             .ok_or(ICBError::ArithmeticOverflow)?;
     } else {
         proposal.no_stake = proposal.no_stake
-            .checked_add(stake_amount)
+            .checked_add(voting_power)
             .ok_or(ICBError::ArithmeticOverflow)?;
     }
     
