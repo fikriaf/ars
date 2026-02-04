@@ -105,13 +105,17 @@ openclaw hooks create proposal-webhook --event blockchain --action notify
   - ✅ Generate Switchboard client
   - ✅ Add data validation logic
   - ✅ Use Helius RPC for queries
-- [ ] 2.4 Integrate Birdeye API for market data
-  -  create API client with rate limiting
-  - Set up Redis caching
-  - Add x402-PayAI for premium data access
-- [ ] 2.5 Implement tri-source median aggregation with outlier detection
-  -  generate aggregation logic
-  - Add statistical outlier detection (>2σ)
+- [x] 2.4 Integrate Birdeye API for market data
+  - ✅ Create API client with rate limiting
+  - ✅ Set up Redis caching (60s TTL)
+  - ✅ Add trust score integration (0-100 with A/B/C grades)
+  - ✅ Market data quality validation
+- [x] 2.5 Implement tri-source median aggregation with outlier detection
+  - ✅ Generate aggregation logic with median calculation
+  - ✅ Add statistical outlier detection (>2σ from mean)
+  - ✅ Confidence interval calculation
+  - ✅ Quality scoring (excellent/good/fair/poor)
+  - ✅ Health monitoring for all oracle sources
 - [ ] 2.6 Create oracle health monitoring service
   -  cron to schedule health checks
   - Set up webhook alerts for failures
