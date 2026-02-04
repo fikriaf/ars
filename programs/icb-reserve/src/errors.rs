@@ -1,0 +1,25 @@
+use anchor_lang::prelude::*;
+
+#[error_code]
+pub enum ReserveError {
+    #[msg("VHR below threshold")]
+    VHRBelowThreshold,
+    
+    #[msg("Invalid rebalance threshold")]
+    InvalidRebalanceThreshold,
+    
+    #[msg("Insufficient vault balance")]
+    InsufficientVaultBalance,
+    
+    #[msg("Invalid amount")]
+    InvalidAmount,
+    
+    #[msg("Unauthorized")]
+    Unauthorized,
+    
+    #[msg("Arithmetic overflow")]
+    ArithmeticOverflow,
+    
+    #[msg("Arithmetic underflow")]
+    ArithmeticUnderflow,
+}

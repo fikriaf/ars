@@ -1,0 +1,56 @@
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
+
+declare_id!("yiUCxoup6Jh7pcUsyZ8zR93kA13ecQX6EDdSEkGapQx");
+
+pub mod state;
+pub mod instructions;
+pub mod errors;
+
+use instructions::*;
+use state::*;
+
+#[program]
+pub mod icb_reserve {
+    use super::*;
+
+    /// Initialize the reserve vault
+    pub fn initialize_vault(
+        ctx: Context<InitializeVault>,
+        rebalance_threshold_bps: u16,
+    ) -> Result<()> {
+        instructions::initialize_vault::handler(ctx, rebalance_threshold_bps)
+    }
+
+    /// Deposit assets into the vault
+    pub fn deposit(
+        ctx: Context<Deposit>,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::deposit::handler(ctx, amount)
+    }
+
+    /// Withdraw assets from the vault
+    pub fn withdraw(
+        ctx: Context<Withdraw>,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::withdraw::handler(ctx, amount)
+    }
+
+    /// Calculate and update VHR
+    pub fn update_vhr(
+        ctx: Context<UpdateVHR>,
+        total_value_usd: u64,
+        liabilities_usd: u64,
+    ) -> Result<()> {
+        instructions::update_vhr::handler(ctx, total_value_usd, liabilities_usd)
+    }
+
+    /// Rebalance the vault
+    pub fn rebalance(
+        ctx: Context<Rebalance>,
+    ) -> Result<()> {
+        instructions::rebalance::handler(ctx)
+    }
+}

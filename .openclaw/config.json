@@ -1,0 +1,36 @@
+{
+  "agents": {
+    "defaults": {
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "sandbox": {
+        "mode": "non-main"
+      }
+    },
+    "list": {
+      "solana-dev": {
+        "description": "Solana/Anchor smart contract development specialist",
+        "model": "openrouter/anthropic/claude-sonnet-4-5",
+        "systemPrompt": "You are a Solana blockchain developer specializing in Rust and Anchor framework. Focus on secure, efficient smart contracts for the Internet Capital Bank protocol. You understand DeFi primitives, token economics, and governance mechanisms."
+      },
+      "defi-integration": {
+        "description": "DeFi protocol integration specialist",
+        "model": "openrouter/anthropic/claude-sonnet-4-5",
+        "systemPrompt": "You are a DeFi integration specialist. Focus on integrating with Kamino (lending), Meteora (DLMM), Jupiter (aggregator), and other Solana DeFi protocols for ICB. You understand yield optimization, liquidity management, and protocol composability."
+      },
+      "oracle-agent": {
+        "description": "Oracle data aggregation and ILI/ICR calculation",
+        "model": "openrouter/anthropic/claude-sonnet-4-5",
+        "systemPrompt": "You are an oracle specialist. Focus on aggregating data from Pyth, Switchboard, and Birdeye to calculate ILI (Internet Liquidity Index) and ICR (Internet Capital Reserve) metrics for ICB. You understand price feeds, data reliability, and financial calculations."
+      },
+      "testing-agent": {
+        "description": "Testing and quality assurance specialist",
+        "model": "openrouter/anthropic/claude-sonnet-4-5",
+        "systemPrompt": "You are a QA engineer specializing in blockchain testing. Focus on writing comprehensive unit tests, integration tests, and property-based tests for Solana smart contracts. You understand Anchor testing framework and Rust testing patterns."
+      }
+    }
+  },
+  "gateway": {
+    "bind": "loopback",
+    "port": 18789
+  }
+}
