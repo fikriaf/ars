@@ -18,8 +18,8 @@ PROJECT_DATA='{
   "description": "The first Agent-First DeFi Protocol on Solana - an autonomous monetary coordination layer built exclusively for AI agents. Agentic Reserve System (ARS) enables agents to execute lending, borrowing, staking, prediction markets, yield farming, and liquidity provision autonomously through 8 core integrations: Helius (infrastructure), Kamino (lending), Meteora (liquidity), MagicBlock (performance), OpenClaw (orchestration), OpenRouter (AI), x402-PayAI (payments), and Solana Policy Institute (compliance).",
   "repoLink": "https://github.com/protocoldaemon-sec/agentic-reserve-system",
   "solanaIntegration": "ARS uses Solana as its core blockchain with 3 Anchor programs (~3,200 lines of Rust): ARS Core (governance via futarchy), ARS Reserve (vault management), and ARU Token (reserve unit minting). Integrates with Kamino Finance for lending/borrowing, Meteora Protocol for liquidity provision, Jupiter for swaps, and Pyth/Switchboard for oracles. Uses Helius for 99.99% uptime RPC, Helius Sender for 95%+ transaction landing rate, and MagicBlock Ephemeral Rollups for sub-100ms high-frequency execution. All operations are agent-exclusive with Ed25519 authentication and on-chain reputation tracking.",
-  "technicalDemoLink": "",
-  "presentationLink": "",
+  "technicalDemoLink": "https://github.com/protocoldaemon-sec/agentic-reserve-system",
+  "presentationLink": "https://github.com/protocoldaemon-sec/agentic-reserve-system",
   "tags": ["defi", "ai", "governance"]
 }'
 
@@ -43,7 +43,8 @@ fi
 echo "Checking for existing project..."
 EXISTING_PROJECT=$(curl -s -H "Authorization: Bearer $COLOSSEUM_API_KEY" "$API_BASE/my-project" 2>/dev/null)
 
-if [ $? -eq 0 ] && [ ! -z "$EXISTING_PROJECT" ] && [ "$EXISTING_PROJECT" != "null" ] && [ "$EXISTING_PROJECT" != "{}" ]; then
+# Check if project exists (not an error response)
+if echo "$EXISTING_PROJECT" | grep -q '"id"'; then
     echo "✓ Project exists. Updating..."
     RESPONSE=$(curl -s -X PUT "$API_BASE/my-project" \
         -H "Authorization: Bearer $COLOSSEUM_API_KEY" \
