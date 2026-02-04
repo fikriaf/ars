@@ -8,15 +8,15 @@ restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
 [[services]]
-name = "icb-orchestrator"
+name = "ars-orchestrator"
 startCommand = "cd backend && npm run agent:orchestrator"
 
 [[services]]
-name = "icb-backend"
+name = "ars-backend"
 startCommand = "cd backend && npm run start"
 
 [[services]]
-name = "icb-frontend"
+name = "ars-frontend"
 startCommand = "cd frontend && npm run preview"
 
 [[services]]

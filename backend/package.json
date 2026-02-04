@@ -1,7 +1,7 @@
 {
-  "name": "icb-backend",
+  "name": "ars-backend",
   "version": "0.1.0",
-  "description": "Internet Central Bank Backend API",
+  "description": "Agentic Reserve System Backend API",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",

@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "programs/icb-core",
-    "programs/icb-reserve",
-    "programs/icb-token"
+    "programs/ars-core",
+    "programs/ars-reserve",
+    "programs/ars-token"
 ]
 resolver = "2"
 

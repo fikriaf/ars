@@ -27,7 +27,7 @@ vi.mock('../services/redis', () => ({
   setCachedData: vi.fn(() => Promise.resolve()),
 }));
 
-describe('ICB Backend API Tests', () => {
+describe('ARS Backend API Tests', () => {
   let app: Application;
 
   beforeAll(() => {

@@ -1,6 +1,6 @@
-# Internet Central Bank - Hackathon Documentation
+# Agentic Reserve System - Hackathon Documentation
 
-**Project**: Internet Central Bank (ICB)  
+**Project**: Agentic Reserve System (ARS)  
 **Hackathon**: Colosseum Agent Hackathon  
 **Team**: @obscura_app  
 **Agent**: obscura-agent (ID: 268)  
@@ -19,7 +19,7 @@
 
 ### Latest Updates
 
-- ✅ All 3 Anchor programs fully implemented (ICB Core, Reserve, Token)
+- ✅ All 3 Anchor programs fully implemented (ARS Core, Reserve, Token)
 - ✅ 16 instructions across all programs
 - ✅ Security features (circuit breaker, bounds checking, PDA derivation)
 - ✅ Comprehensive documentation (13 hackathon docs + 6 deployment guides)
@@ -40,13 +40,13 @@
 
 ## 🏛️ Project Overview
 
-The Internet Central Bank is an **Agent-First DeFi Protocol** - the first autonomous monetary coordination layer built exclusively for AI agents on Solana. Unlike traditional DeFi protocols designed for humans, ICB enables AI agents to execute lending, borrowing, staking, prediction markets, yield farming, and liquidity provision autonomously.
+The Agentic Reserve System is an **Agent-First DeFi Protocol** - the first autonomous monetary coordination layer built exclusively for AI agents on Solana. Unlike traditional DeFi protocols designed for humans, ARS enables AI agents to execute lending, borrowing, staking, prediction markets, yield farming, and liquidity provision autonomously.
 
 ## 🤖 Agent-First Architecture
 
 **Key Principle**: Users = AI Agents, Not Humans
 
-ICB is designed from the ground up for AI agents to:
+ARS is designed from the ground up for AI agents to:
 - ✅ Execute DeFi strategies autonomously
 - ✅ Coordinate through prediction markets (futarchy)
 - ✅ Govern monetary policy algorithmically
@@ -150,7 +150,7 @@ ICB is designed from the ground up for AI agents to:
 11. **[REVENUE_MODEL.md](./documentation/hackathon/REVENUE_MODEL.md)** - Cheap but compounding revenue model
     - Fee structure (0.02%-0.05% per operation)
     - Revenue projections (100/1,000/10,000 agents)
-    - Token economics (ICU buyback & burn)
+    - Token economics (ARU buyback & burn)
     - Staking APY calculations
     - Profit margins (99%+)
     - Compounding growth mechanics
@@ -170,22 +170,22 @@ ICB is designed from the ground up for AI agents to:
     - Migration guides
 
 ### Specification Files
-Located in `.kiro/specs/internet-central-bank/`:
+Located in `.kiro/specs/agentic-capital-bank/`:
 
-1. **[requirements.md](./.kiro/specs/internet-central-bank/requirements.md)** - Agent-centric requirements
+1. **[requirements.md](./.kiro/specs/agentic-capital-bank/requirements.md)** - Agent-centric requirements
    - 8 user stories from agent perspective
    - Integration-specific acceptance criteria
    - Non-functional requirements
    - Success metrics
 
-2. **[design.md](./.kiro/specs/internet-central-bank/design.md)** - Technical architecture
+2. **[design.md](./.kiro/specs/agentic-capital-bank/design.md)** - Technical architecture
    - Complete system architecture with all 8 integrations
    - Data models and account structures
    - API specifications (REST + WebSocket)
    - OpenClaw SDK examples
    - Security considerations
 
-3. **[tasks.md](./.kiro/specs/internet-central-bank/tasks.md)** - Implementation roadmap
+3. **[tasks.md](./.kiro/specs/agentic-capital-bank/tasks.md)** - Implementation roadmap
    - 21 phases with 100+ tasks
    - Integration-specific implementation steps
    - OpenClaw automation throughout
@@ -217,7 +217,7 @@ Located in `documentation/development/`:
 
 ### "Most Agentic" Prize Category
 
-ICB is designed to win the "Most Agentic" prize:
+ARS is designed to win the "Most Agentic" prize:
 
 ✅ **100% Autonomous**: All operations executed by agents  
 ✅ **Agent-Exclusive**: Humans cannot execute DeFi operations  
@@ -265,7 +265,7 @@ Deploy to your own VPS with full autonomous agent capabilities:
 
 ```bash
 # On your VPS (Ubuntu 20.04+)
-wget https://raw.githubusercontent.com/protocoldaemon-sec/internet-capital-bank/main/scripts/autonomous-deploy.sh
+wget https://raw.githubusercontent.com/protocoldaemon-sec/agentic-capital-bank/main/scripts/autonomous-deploy.sh
 chmod +x autonomous-deploy.sh
 ./autonomous-deploy.sh
 ```
@@ -305,8 +305,8 @@ For detailed Railway deployment, see [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMEN
 
 ```bash
 # Clone repository
-git clone https://github.com/protocoldaemon-sec/internet-capital-bank
-cd internet-capital-bank
+git clone https://github.com/protocoldaemon-sec/agentic-capital-bank
+cd agentic-capital-bank
 
 # Install dependencies
 npm install
@@ -328,9 +328,9 @@ anchor keys list
 ```
 
 **Deployed Program IDs (Devnet):**
-- ICB Core: `9H91snZVEiEZkKFNs2NC7spJG3ieJtF2oeu6SwSnvy4S`
-- ICB Reserve: `gaN527TnpTBtPQVdZvVeuzKrwdV2HiarZAX8H6jTAVL`
-- ICU Token: `3KGdConvEfZnGdtAtcKDfozVDPM97gf5WkX9m1Z73i4A`
+- ARS Core: `9H91snZVEiEZkKFNs2NC7spJG3ieJtF2oeu6SwSnvy4S`
+- ARS Reserve: `gaN527TnpTBtPQVdZvVeuzKrwdV2HiarZAX8H6jTAVL`
+- ARU Token: `3KGdConvEfZnGdtAtcKDfozVDPM97gf5WkX9m1Z73i4A`
 
 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
@@ -489,7 +489,7 @@ For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## � Revenue Model - Compounding Micro-Fees
 
-ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-frequency agent operations create sustainable protocol revenue.
+ARS uses a **"cheap but compounding"** revenue model where tiny fees on high-frequency agent operations create sustainable protocol revenue.
 
 ### Fee Structure
 
@@ -512,18 +512,18 @@ ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-fre
 - **Example**: $50,000 HFT session = $10 fee
 
 #### 4. OpenRouter AI Usage Fees (10% markup)
-- **Strategy Analysis**: ICB adds 10% to OpenRouter costs
+- **Strategy Analysis**: ARS adds 10% to OpenRouter costs
 - **Proposal Voting**: AI-powered voting recommendations
-- **Example**: $0.10 OpenRouter cost = $0.11 to agent ($0.01 to ICB)
+- **Example**: $0.10 OpenRouter cost = $0.11 to agent ($0.01 to ARS)
 
 #### 5. Futarchy Proposal Fees
-- **Proposal Creation**: 10 ICU tokens (burned)
+- **Proposal Creation**: 10 ARU tokens (burned)
 - **Failed Prediction Slashing**: 10% of losing stake → protocol treasury
 - **Example**: $1,000 losing stake = $100 to treasury
 
 #### 6. Reserve Vault Management Fee (0.1% annually)
 - **Assets Under Management**: 0.1% annual fee on vault TVL
-- **Distributed**: Quarterly to ICU token holders
+- **Distributed**: Quarterly to ARU token holders
 - **Example**: $10M vault = $10,000/year
 
 ### Revenue Compounding Effect
@@ -543,7 +543,7 @@ ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-fre
    - 100 agents × $5,000/day = $500,000/day
 
 4. **Compounding Through Reinvestment**:
-   - Protocol fees → ICU buyback → Staking rewards → More agents → More fees
+   - Protocol fees → ARU buyback → Staking rewards → More agents → More fees
 
 ### Revenue Projections
 
@@ -583,7 +583,7 @@ ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-fre
 ### Fee Distribution
 
 **Protocol Revenue Allocation:**
-- 40% → ICU Token Buyback & Burn (deflationary pressure)
+- 40% → ARU Token Buyback & Burn (deflationary pressure)
 - 30% → Agent Staking Rewards (incentivize long-term agents)
 - 20% → Protocol Development Fund (continuous improvement)
 - 10% → Insurance Fund (cover circuit breaker events)
@@ -592,7 +592,7 @@ ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-fre
 
 1. **Lower Than Traditional DeFi**:
    - Uniswap: 0.3% swap fee
-   - ICB: 0.05% transaction fee (6x cheaper)
+   - ARS: 0.05% transaction fee (6x cheaper)
 
 2. **Agent-Optimized Pricing**:
    - Humans: High fees, low volume
@@ -628,36 +628,36 @@ ICB uses a **"cheap but compounding"** revenue model where tiny fees on high-fre
 - 1,000 agents: $17.26M/month - $2K costs = **99.99% margin**
 - 10,000 agents: $172.6M/month - $2K costs = **99.999% margin**
 
-### Token Economics (ICU)
+### Token Economics (ARU)
 
-**ICU Token Utility:**
+**ARU Token Utility:**
 1. **Governance**: Vote on protocol parameters
 2. **Staking**: Earn 30% of protocol fees
 3. **Proposal Creation**: Required to create futarchy proposals
-4. **Fee Discounts**: 50% fee discount for ICU stakers
+4. **Fee Discounts**: 50% fee discount for ARU stakers
 5. **Buyback & Burn**: 40% of fees used for buyback
 
 **Supply Dynamics:**
-- Initial Supply: 100M ICU
-- Max Supply: 100M ICU (capped)
+- Initial Supply: 100M ARU
+- Max Supply: 100M ARU (capped)
 - Burn Rate: 40% of fees + proposal burns
 - Deflationary: Supply decreases over time
 
 **Staking APY Calculation:**
 ```
 Annual Staking Rewards = Protocol Revenue × 30%
-Staking APY = Annual Rewards / Total Staked ICU
+Staking APY = Annual Rewards / Total Staked ARU
 
 Example (100 agents):
 - Annual Revenue: $20.7M
 - Staking Rewards: $6.21M (30%)
-- Total Staked: 50M ICU (50% of supply)
+- Total Staked: 50M ARU (50% of supply)
 - Staking APY: $6.21M / $50M = 12.4%
 
 Example (1,000 agents):
 - Annual Revenue: $207M
 - Staking Rewards: $62.1M (30%)
-- Total Staked: 50M ICU
+- Total Staked: 50M ARU
 - Staking APY: $62.1M / $50M = 124%
 ```
 
@@ -704,9 +704,9 @@ Example (1,000 agents):
 - [Solana Policy Institute](https://solanapolicyinstitute.org/)
 
 ### Internal Links
-- [Requirements](./.kiro/specs/internet-central-bank/requirements.md)
-- [Design](./.kiro/specs/internet-central-bank/design.md)
-- [Tasks](./.kiro/specs/internet-central-bank/tasks.md)
+- [Requirements](./.kiro/specs/agentic-capital-bank/requirements.md)
+- [Design](./.kiro/specs/agentic-capital-bank/design.md)
+- [Tasks](./.kiro/specs/agentic-capital-bank/tasks.md)
 - [Project Summary](./documentation/hackathon/PROJECT_SUMMARY.md)
 
 ## 👥 Team

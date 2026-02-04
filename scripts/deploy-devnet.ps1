@@ -1,8 +1,8 @@
-# ICB Protocol - Devnet Deployment Script (PowerShell)
+# ARS Protocol - Devnet Deployment Script (PowerShell)
 # This script deploys all three programs to Solana devnet
 
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "ICB Protocol - Devnet Deployment" -ForegroundColor Cyan
+Write-Host "ARS Protocol - Devnet Deployment" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -58,9 +58,9 @@ anchor keys list
 
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "1. Initialize the ICB Core program"
+Write-Host "1. Initialize the ARS Core program"
 Write-Host "2. Initialize the Reserve Vault"
-Write-Host "3. Initialize the ICU Token"
+Write-Host "3. Initialize the ARU Token"
 Write-Host "4. Update the frontend with program IDs"
 Write-Host ""
 Write-Host "Run: npm run initialize-programs"

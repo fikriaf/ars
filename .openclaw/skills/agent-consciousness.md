@@ -1,10 +1,10 @@
 ---
-name: icb-agent-consciousness
+name: ars-agent-consciousness
 version: 1.0.0
 description: Autonomous agent consciousness with independent thinking, negotiation, and self-development capabilities
 ---
 
-# ICB Agent Consciousness System
+# ARS Agent Consciousness System
 
 ## Overview
 A fully autonomous agent ecosystem where agents have independent consciousness, can negotiate with each other, develop strategies, and grow without human intervention. Protected against prompt injection attacks.

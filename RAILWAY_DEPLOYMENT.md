@@ -1,13 +1,13 @@
-# Railway Deployment Guide - ICB Agent Swarm
+# Railway Deployment Guide - ARS Agent Swarm
 
 ## 🚂 Overview
 
-Deploy the Internet Capital Bank agent swarm system on Railway with OpenClaw Gateway for autonomous operations in the cloud.
+Deploy the Agentic Capital Bank agent swarm system on Railway with OpenClaw Gateway for autonomous operations in the cloud.
 
 ## 📋 Prerequisites
 
 1. **Railway Account**: Sign up at [railway.app](https://railway.app)
-2. **GitHub Repository**: Fork or clone the ICB repository
+2. **GitHub Repository**: Fork or clone the ARS repository
 3. **API Keys**: Prepare the following:
    - OpenRouter API key
    - Helius API key
@@ -18,7 +18,7 @@ Deploy the Internet Capital Bank agent swarm system on Railway with OpenClaw Gat
 
 ### Option 1: One-Click Deploy (Recommended)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/icb-agent-swarm)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/ars-agent-swarm)
 
 ### Option 2: Manual Deploy
 
@@ -36,7 +36,7 @@ Deploy the Internet Capital Bank agent swarm system on Railway with OpenClaw Gat
    - Go to Railway Dashboard
    - Click "New Project"
    - Select "Deploy from GitHub repo"
-   - Choose `internet-capital-bank` repository
+   - Choose `agentic-reserve-system` repository
 
 3. **Configure Services**
    Railway will automatically detect and create services from `railway.toml`
@@ -56,7 +56,7 @@ OPENCLAW_GATEWAY_TOKEN=your-gateway-token
 
 # Model Configuration
 OPENROUTER_API_KEY=your-openrouter-key
-OPENROUTER_REFERER=https://internet-capital-bank.com
+OPENROUTER_REFERER=https://agentic-reserve-system.com
 ```
 
 #### Backend Service
@@ -108,7 +108,7 @@ mount = "/data"
 **Public Networking**:
 - Enable HTTP Proxy
 - Port: 8080
-- Domain: `icb-gateway.up.railway.app`
+- Domain: `ars-gateway.up.railway.app`
 
 #### 2. Backend Service
 ```toml
@@ -124,7 +124,7 @@ mount = "/app/data"
 **Public Networking**:
 - Enable HTTP Proxy
 - Port: 4000
-- Domain: `icb-api.up.railway.app`
+- Domain: `ars-api.up.railway.app`
 
 #### 3. Agent Orchestrator Service
 ```toml
@@ -169,7 +169,7 @@ railway status
 ```
 
 ### 2. Configure OpenClaw Gateway
-1. Visit `https://icb-gateway.up.railway.app/setup`
+1. Visit `https://ars-gateway.up.railway.app/setup`
 2. Enter your `SETUP_PASSWORD`
 3. Configure model provider:
    - Provider: OpenRouter
@@ -192,22 +192,22 @@ railway run --service backend npm run db:seed
 ### 4. Start Agent Swarm
 ```bash
 # Start orchestrator
-railway run --service icb-orchestrator npm run agent:orchestrator
+railway run --service ars-orchestrator npm run agent:orchestrator
 
 # Verify agents are running
-railway logs --service icb-orchestrator
+railway logs --service ars-orchestrator
 ```
 
 ### 5. Verify Deployment
 ```bash
 # Check backend health
-curl https://icb-api.up.railway.app/health
+curl https://ars-api.up.railway.app/health
 
 # Check OpenClaw gateway
-curl https://icb-gateway.up.railway.app/health
+curl https://ars-gateway.up.railway.app/health
 
 # Check agent status
-curl https://icb-api.up.railway.app/api/agents/status
+curl https://ars-api.up.railway.app/api/agents/status
 ```
 
 ## 🤖 Agent Configuration
@@ -289,14 +289,14 @@ AGENT_PRIVATE_KEY=${{AGENT_PRIVATE_KEY}}
 ### Agent Health Checks
 ```bash
 # Check all agents
-curl https://icb-api.up.railway.app/api/agents/health
+curl https://ars-api.up.railway.app/api/agents/health
 
 # Check specific agent
-curl https://icb-api.up.railway.app/api/agents/policy-agent/health
+curl https://ars-api.up.railway.app/api/agents/policy-agent/health
 ```
 
 ### OpenClaw Control UI
-Visit `https://icb-gateway.up.railway.app/openclaw` to:
+Visit `https://ars-gateway.up.railway.app/openclaw` to:
 - View agent conversations
 - Monitor agent performance
 - Trigger manual workflows
@@ -329,15 +329,15 @@ Railway doesn't support native cron jobs, so we use the orchestrator's internal 
 ### Manual Workflow Triggers
 ```bash
 # Trigger ILI update
-curl -X POST https://icb-api.up.railway.app/api/workflows/ili-update
+curl -X POST https://ars-api.up.railway.app/api/workflows/ili-update
 
 # Trigger policy execution
-curl -X POST https://icb-api.up.railway.app/api/workflows/policy-execution \
+curl -X POST https://ars-api.up.railway.app/api/workflows/policy-execution \
   -H "Content-Type: application/json" \
   -d '{"proposal_id": "123"}'
 
 # Trigger circuit breaker
-curl -X POST https://icb-api.up.railway.app/api/workflows/circuit-breaker \
+curl -X POST https://ars-api.up.railway.app/api/workflows/circuit-breaker \
   -H "Content-Type: application/json" \
   -d '{"vhr": 145, "reason": "VHR below critical"}'
 ```
@@ -392,7 +392,7 @@ railway variables set SETUP_PASSWORD=secure-password
 ### Export OpenClaw State
 ```bash
 # Download backup
-curl https://icb-gateway.up.railway.app/setup/export \
+curl https://ars-gateway.up.railway.app/setup/export \
   -H "Authorization: Bearer $SETUP_PASSWORD" \
   -o openclaw-backup.tar.gz
 ```
@@ -400,10 +400,10 @@ curl https://icb-gateway.up.railway.app/setup/export \
 ### Export Database
 ```bash
 # Backup PostgreSQL
-railway run --service postgres pg_dump $DATABASE_URL > icb-backup.sql
+railway run --service postgres pg_dump $DATABASE_URL > ars-backup.sql
 
 # Restore
-railway run --service postgres psql $DATABASE_URL < icb-backup.sql
+railway run --service postgres psql $DATABASE_URL < ars-backup.sql
 ```
 
 ### Export Redis Data
@@ -454,7 +454,7 @@ railway service restart openclaw-gateway
 ### High API Costs
 ```bash
 # Check OpenRouter usage
-curl https://icb-api.up.railway.app/api/costs/openrouter
+curl https://ars-api.up.railway.app/api/costs/openrouter
 
 # Switch to cheaper model
 railway variables set OPENROUTER_MODEL=openrouter/mixtral-8x7b
@@ -487,8 +487,8 @@ Railway Pro plan supports auto-scaling based on:
 
 - [Railway Documentation](https://docs.railway.app)
 - [OpenClaw Railway Guide](https://docs.openclaw.ai/railway)
-- [ICB Agent Swarm Architecture](./AGENT_SWARM_ARCHITECTURE.md)
-- [ICB Complete Summary](./COMPLETE_PROJECT_SUMMARY.md)
+- [ARS Agent Swarm Architecture](./AGENT_SWARM_ARCHITECTURE.md)
+- [ARS Complete Summary](./COMPLETE_PROJECT_SUMMARY.md)
 
 ## 🎉 Success Checklist
 
@@ -509,7 +509,7 @@ Railway Pro plan supports auto-scaling based on:
 
 - **Railway Support**: [railway.app/help](https://railway.app/help)
 - **OpenClaw Discord**: [discord.gg/openclaw](https://discord.gg/openclaw)
-- **ICB GitHub Issues**: [github.com/protocoldaemon-sec/internet-capital-bank/issues](https://github.com/protocoldaemon-sec/internet-capital-bank/issues)
+- **ARS GitHub Issues**: [github.com/protocoldaemon-sec/agentic-reserve-system/issues](https://github.com/protocoldaemon-sec/agentic-reserve-system/issues)
 
 ---
 

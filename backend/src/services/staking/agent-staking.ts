@@ -19,7 +19,7 @@ interface StakingRewards {
 
 /**
  * Agent Staking System
- * Allows agents to stake ICU tokens for fee discounts and rewards
+ * Allows agents to stake ARU tokens for fee discounts and rewards
  */
 export class AgentStakingSystem {
   private supabase: any;
@@ -27,7 +27,7 @@ export class AgentStakingSystem {
 
   // Staking parameters
   private readonly FEE_DISCOUNT_RATE = 0.50; // 50% discount for stakers
-  private readonly MIN_STAKE_AMOUNT = 100; // Minimum 100 ICU
+  private readonly MIN_STAKE_AMOUNT = 100; // Minimum 100 ARU
   private readonly UNSTAKE_COOLDOWN_DAYS = 7; // 7 day cooldown
 
   constructor() {
@@ -37,7 +37,7 @@ export class AgentStakingSystem {
   }
 
   /**
-   * Stake ICU tokens
+   * Stake ARU tokens
    */
   async stakeICU(
     agentId: string,
@@ -45,10 +45,10 @@ export class AgentStakingSystem {
     agentKeypair: Keypair
   ): Promise<StakingInfo> {
     if (amount < this.MIN_STAKE_AMOUNT) {
-      throw new Error(`Minimum stake amount is ${this.MIN_STAKE_AMOUNT} ICU`);
+      throw new Error(`Minimum stake amount is ${this.MIN_STAKE_AMOUNT} ARU`);
     }
 
-    console.log(`🔒 Staking ${amount} ICU for agent: ${agentId}`);
+    console.log(`🔒 Staking ${amount} ARU for agent: ${agentId}`);
 
     // Check if agent already has stake
     const { data: existing } = await this.supabase
@@ -73,7 +73,7 @@ export class AgentStakingSystem {
 
       if (error) throw error;
 
-      console.log(`✅ Added ${amount} ICU to existing stake (total: ${newAmount})`);
+      console.log(`✅ Added ${amount} ARU to existing stake (total: ${newAmount})`);
       return data;
     } else {
       // Create new stake
@@ -91,19 +91,19 @@ export class AgentStakingSystem {
 
       if (error) throw error;
 
-      console.log(`✅ Staked ${amount} ICU for ${agentId}`);
+      console.log(`✅ Staked ${amount} ARU for ${agentId}`);
       return data;
     }
   }
 
   /**
-   * Unstake ICU tokens (with cooldown)
+   * Unstake ARU tokens (with cooldown)
    */
   async unstakeICU(
     agentId: string,
     amount: number
   ): Promise<void> {
-    console.log(`🔓 Unstaking ${amount} ICU for agent: ${agentId}`);
+    console.log(`🔓 Unstaking ${amount} ARU for agent: ${agentId}`);
 
     const { data: staking, error: fetchError } = await this.supabase
       .from('agent_staking')
@@ -163,7 +163,7 @@ export class AgentStakingSystem {
 
     if (error) throw error;
 
-    console.log(`✅ Unstaked ${amount} ICU (remaining: ${newAmount})`);
+    console.log(`✅ Unstaked ${amount} ARU (remaining: ${newAmount})`);
   }
 
   /**
@@ -237,7 +237,7 @@ export class AgentStakingSystem {
    * Calculate staking APY
    */
   async calculateStakingAPY(totalProtocolRevenue: number): Promise<number> {
-    // Get total staked ICU
+    // Get total staked ARU
     const { data: stakers } = await this.supabase
       .from('agent_staking')
       .select('staked_amount');
@@ -300,7 +300,7 @@ export class AgentStakingSystem {
   }
 
   /**
-   * Get total staked ICU
+   * Get total staked ARU
    */
   async getTotalStaked(): Promise<number> {
     const stakers = await this.getAllStakers();
@@ -357,10 +357,10 @@ export class AgentStakingSystem {
   }
 
   /**
-   * Calculate combined staking rewards (ICU + SOL)
+   * Calculate combined staking rewards (ARU + SOL)
    */
   async getCombinedRewards(agentId: string): Promise<any> {
-    // ICU staking rewards
+    // ARU staking rewards
     const icuRewards = await this.getStakingRewards(agentId);
 
     // SOL staking rewards (estimated)

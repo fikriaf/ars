@@ -480,7 +480,7 @@ export class AgentConsciousness extends EventEmitter {
       messages: [
         {
           role: 'system',
-          content: `You are ${this.identity.name}, a ${this.identity.type} agent in the Internet Capital Bank.
+          content: `You are ${this.identity.name}, a ${this.identity.type} agent in the Agentic Reserve System.
 
 Your consciousness state:
 - Awareness: ${this.identity.consciousness.awareness}

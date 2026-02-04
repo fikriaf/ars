@@ -1,13 +1,13 @@
 ---
-name: icb-autonomous-operations
+name: ars-autonomous-operations
 version: 1.0.0
-description: Autonomous agent operations with root access, self-management, and skill-based learning for Internet Capital Bank
+description: Autonomous agent operations with root access, self-management, and skill-based learning for Agentic Reserve System
 ---
 
-# ICB Autonomous Operations Skill
+# ARS Autonomous Operations Skill
 
 ## Overview
-This skill enables fully autonomous agent operations for the Internet Capital Bank project, including:
+This skill enables fully autonomous agent operations for the Agentic Reserve System project, including:
 - Root-level system access for VPS deployment
 - Self-management and self-replication capabilities
 - Skill-based learning and adaptation
@@ -258,7 +258,7 @@ class AgentReplicator {
     // Use AI to generate agent code
     const openRouter = getOpenRouterClient();
     
-    const prompt = `Generate a TypeScript agent class for the Internet Capital Bank with:
+    const prompt = `Generate a TypeScript agent class for the Agentic Reserve System with:
 Type: ${config.type}
 Capabilities: ${config.capabilities.join(', ')}
 Purpose: ${config.purpose}
@@ -456,7 +456,7 @@ setInterval(async () => {
 
 set -e
 
-echo "🚀 Starting autonomous ICB deployment..."
+echo "🚀 Starting autonomous ARS deployment..."
 
 # 1. System setup
 echo "📦 Installing system dependencies..."
@@ -534,7 +534,7 @@ cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [
     {
-      name: 'icb-orchestrator',
+      name: 'ars-orchestrator',
       script: 'backend/src/services/agent-swarm/orchestrator.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -546,7 +546,7 @@ module.exports = {
       }
     },
     {
-      name: 'icb-backend',
+      name: 'ars-backend',
       script: 'backend/src/index.ts',
       interpreter: 'ts-node',
       instances: 2,
@@ -559,7 +559,7 @@ module.exports = {
       }
     },
     {
-      name: 'icb-policy-agent',
+      name: 'ars-policy-agent',
       script: 'backend/src/services/agent-swarm/agents/policy-agent.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -608,7 +608,7 @@ sudo ln -sf /etc/nginx/sites-available/icb /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl restart nginx
 
 echo "✅ Deployment complete!"
-echo "🌐 Access your ICB instance at: http://$(curl -s ifconfig.me)"
+echo "🌐 Access your ARS instance at: http://$(curl -s ifconfig.me)"
 echo "📊 Monitor with: pm2 monit"
 echo "📝 View logs with: pm2 logs"
 ```
@@ -826,10 +826,10 @@ class AccessController {
 pm2 status
 
 # View logs
-pm2 logs icb-orchestrator --lines 100
+pm2 logs ars-orchestrator --lines 100
 
 # Restart agent
-pm2 restart icb-orchestrator
+pm2 restart ars-orchestrator
 ```
 
 ### High Resource Usage

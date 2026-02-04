@@ -1,9 +1,9 @@
 #!/bin/bash
-# autonomous-deploy.sh - Fully autonomous VPS deployment for Internet Capital Bank
+# autonomous-deploy.sh - Fully autonomous VPS deployment for Agentic Capital Bank
 
 set -e
 
-echo "🚀 Starting autonomous ICB deployment..."
+echo "🚀 Starting autonomous ARS deployment..."
 
 # 1. System setup
 echo "📦 Installing system dependencies..."
@@ -100,7 +100,7 @@ cat > ecosystem.config.js << 'EOF'
 module.exports = {
   apps: [
     {
-      name: 'icb-orchestrator',
+      name: 'ars-orchestrator',
       script: 'backend/src/services/agent-swarm/orchestrator.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -112,7 +112,7 @@ module.exports = {
       }
     },
     {
-      name: 'icb-backend',
+      name: 'ars-backend',
       script: 'backend/src/index.ts',
       interpreter: 'ts-node',
       instances: 2,
@@ -126,7 +126,7 @@ module.exports = {
       }
     },
     {
-      name: 'icb-policy-agent',
+      name: 'ars-policy-agent',
       script: 'backend/src/services/agent-swarm/agents/policy-agent.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -208,7 +208,7 @@ pm2 set pm2-logrotate:retain 7
 echo ""
 echo "✅ Deployment complete!"
 echo ""
-echo "🌐 Access your ICB instance at: http://$(curl -s ifconfig.me)"
+echo "🌐 Access your ARS instance at: http://$(curl -s ifconfig.me)"
 echo "📊 Monitor with: pm2 monit"
 echo "📝 View logs with: pm2 logs"
 echo "🔄 Restart all: pm2 restart all"

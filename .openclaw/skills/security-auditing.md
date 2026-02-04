@@ -1,10 +1,10 @@
 ---
-name: icb-security-auditing
+name: ars-security-auditing
 version: 1.0.0
 description: Autonomous blockchain security auditing with CTF, pentesting, fuzzing, static analysis, and cryptographic verification
 ---
 
-# ICB Security Auditing Skill
+# ARS Security Auditing Skill
 
 ## Overview
 Autonomous security agents that perform comprehensive blockchain security auditing including:
@@ -201,12 +201,12 @@ class FuzzingAgent {
       await execAsync('cargo install trident-cli');
       
       // Initialize Trident
-      await execAsync('trident init', { cwd: 'programs/icb-core' });
+      await execAsync('trident init', { cwd: 'programs/ars-core' });
       
       // Run fuzzing
       const { stdout } = await execAsync(
         'trident fuzz run-hfuzz --iterations 10000',
-        { cwd: 'programs/icb-core', timeout: 300000 }
+        { cwd: 'programs/ars-core', timeout: 300000 }
       );
       
       return {
@@ -226,7 +226,7 @@ class FuzzingAgent {
       await execAsync('cargo install cargo-fuzz');
       
       // Initialize fuzz targets
-      await execAsync('cargo fuzz init', { cwd: 'programs/icb-core' });
+      await execAsync('cargo fuzz init', { cwd: 'programs/ars-core' });
       
       // Create fuzz targets for each instruction
       const instructions = await this.getInstructions();
@@ -240,7 +240,7 @@ class FuzzingAgent {
       for (const instruction of instructions) {
         const { stdout } = await execAsync(
           `cargo fuzz run ${instruction} -- -max_total_time=60`,
-          { cwd: 'programs/icb-core' }
+          { cwd: 'programs/ars-core' }
         );
         
         results.push({
@@ -276,7 +276,7 @@ fuzz_target!(|data: &[u8]| {
     
     const fs = require('fs');
     fs.writeFileSync(
-      `programs/icb-core/fuzz/fuzz_targets/${instruction}.rs`,
+      `programs/ars-core/fuzz/fuzz_targets/${instruction}.rs`,
       fuzzCode
     );
   }
@@ -382,7 +382,7 @@ async fn test_oracle_manipulation() {
     testName: string
   ): Promise<PentestResult> {
     const fs = require('fs');
-    const testPath = `programs/icb-core/tests/pentest_${testName}.rs`;
+    const testPath = `programs/ars-core/tests/pentest_${testName}.rs`;
     
     // Write PoC test
     fs.writeFileSync(testPath, code);
@@ -391,7 +391,7 @@ async fn test_oracle_manipulation() {
       // Run test
       const { stdout, stderr } = await execAsync(
         `cargo test pentest_${testName} -- --nocapture`,
-        { cwd: 'programs/icb-core' }
+        { cwd: 'programs/ars-core' }
       );
       
       const passed = !stderr.includes('FAILED');
@@ -828,7 +828,7 @@ class SecurityReportingAgent {
 #!/bin/bash
 # security-pipeline.sh - Run full security audit
 
-echo "🔒 Starting ICB Security Audit Pipeline..."
+echo "🔒 Starting ARS Security Audit Pipeline..."
 
 # 1. Static Analysis
 echo "📊 Running static analysis..."
@@ -838,7 +838,7 @@ semgrep --config=auto programs/
 
 # 2. Fuzzing
 echo "🔍 Running fuzzing..."
-cd programs/icb-core
+cd programs/ars-core
 trident fuzz run-hfuzz --iterations 10000
 cargo fuzz run --all -- -max_total_time=300
 

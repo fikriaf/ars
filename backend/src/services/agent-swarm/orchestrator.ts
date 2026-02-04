@@ -36,7 +36,7 @@ export interface Workflow {
 }
 
 /**
- * ICB Agent Swarm Orchestrator
+ * ARS Agent Swarm Orchestrator
  * Coordinates multi-agent system for autonomous operations
  */
 export class AgentOrchestrator extends EventEmitter {
@@ -323,7 +323,7 @@ export class AgentOrchestrator extends EventEmitter {
   private async executeStep(step: WorkflowStep, inputs: any): Promise<AgentResponse> {
     const message: AgentMessage = {
       type: 'action-request',
-      from: 'icb-orchestrator',
+      from: 'ars-orchestrator',
       to: step.agent,
       payload: {
         action: step.action,
@@ -387,7 +387,7 @@ export class AgentOrchestrator extends EventEmitter {
     for (const approver of approvers) {
       const message: AgentMessage = {
         type: 'approval-request',
-        from: 'icb-orchestrator',
+        from: 'ars-orchestrator',
         to: approver,
         payload: { step },
         timestamp: Date.now(),
@@ -441,7 +441,7 @@ export class AgentOrchestrator extends EventEmitter {
     for (const [agentId] of this.agents) {
       const message: AgentMessage = {
         type: 'consensus-vote',
-        from: 'icb-orchestrator',
+        from: 'ars-orchestrator',
         to: agentId,
         payload,
         timestamp: Date.now(),
@@ -654,7 +654,7 @@ export class AutonomousOrchestrator extends AgentOrchestrator {
     // Notify monitoring
     await this.sendMessage('monitoring-agent', {
       type: 'alert',
-      from: 'icb-orchestrator',
+      from: 'ars-orchestrator',
       to: 'monitoring-agent',
       payload: {
         severity: 'info',

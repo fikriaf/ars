@@ -4,7 +4,7 @@ services:
   # Supabase PostgreSQL Database
   postgres:
     image: supabase/postgres:15.1.0.117
-    container_name: icb-postgres
+    container_name: ars-postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -21,12 +21,12 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase Studio (Database UI)
   studio:
     image: supabase/studio:20231123-64a766a
-    container_name: icb-studio
+    container_name: ars-studio
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -38,12 +38,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase Kong API Gateway
   kong:
     image: kong:2.8.1
-    container_name: icb-kong
+    container_name: ars-kong
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -58,12 +58,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase Auth
   auth:
     image: supabase/gotrue:v2.99.0
-    container_name: icb-auth
+    container_name: ars-auth
     restart: unless-stopped
     environment:
       GOTRUE_API_HOST: 0.0.0.0
@@ -84,12 +84,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase Realtime
   realtime:
     image: supabase/realtime:v2.25.35
-    container_name: icb-realtime
+    container_name: ars-realtime
     restart: unless-stopped
     environment:
       PORT: 4000
@@ -110,14 +110,14 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
     command: >
       sh -c "/app/bin/migrate && /app/bin/realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && /app/bin/server"
 
   # Supabase Storage
   storage:
     image: supabase/storage-api:v0.43.11
-    container_name: icb-storage
+    container_name: ars-storage
     restart: unless-stopped
     environment:
       ANON_KEY: ${SUPABASE_ANON_KEY}
@@ -137,12 +137,12 @@ services:
       - postgres
       - rest
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase Meta (Database Management)
   meta:
     image: supabase/postgres-meta:v0.68.0
-    container_name: icb-meta
+    container_name: ars-meta
     restart: unless-stopped
     environment:
       PG_META_PORT: 8080
@@ -154,12 +154,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
 
   # Supabase REST API (PostgREST)
   rest:
     image: postgrest/postgrest:v11.2.0
-    container_name: icb-rest
+    container_name: ars-rest
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://postgres:${POSTGRES_PASSWORD:-your-super-secret-password}@postgres:5432/postgres
@@ -172,12 +172,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - icb-network
+      - ars-network
 
   # Redis for caching and rate limiting
   redis:
     image: redis:7-alpine
-    container_name: icb-redis
+    container_name: ars-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -190,12 +190,12 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - icb-network
+      - ars-network
 
   # OpenClaw Agent Gateway (Optional)
   openclaw:
     image: openclaw/gateway:latest
-    container_name: icb-openclaw
+    container_name: ars-openclaw
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -208,7 +208,7 @@ services:
       - postgres
       - redis
     networks:
-      - icb-network
+      - ars-network
     profiles:
       - openclaw
 
@@ -221,5 +221,5 @@ volumes:
     driver: local
 
 networks:
-  icb-network:
+  ars-network:
     driver: bridge

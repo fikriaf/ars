@@ -1,7 +1,7 @@
 {
-  "name": "icb-protocol",
+  "name": "ars-protocol",
   "version": "0.1.0",
-  "description": "Internet Central Bank - Agent-First DeFi Protocol",
+  "description": "Agentic Reserve System - Agent-First DeFi Protocol",
   "private": true,
   "workspaces": [
     "backend",
@@ -46,7 +46,7 @@
     "futarchy",
     "oracle"
   ],
-  "author": "ICB Protocol Team",
+  "author": "ARS Protocol Team",
   "license": "MIT",
   "devDependencies": {
     "@coral-xyz/anchor": "^0.32.1",

@@ -136,7 +136,7 @@ export class SecurityAgent extends EventEmitter {
     // Cargo audit
     try {
       const { stdout } = await execAsync('cargo audit --json', {
-        cwd: 'programs/icb-core'
+        cwd: 'programs/ars-core'
       });
       const report = JSON.parse(stdout);
 
@@ -158,7 +158,7 @@ export class SecurityAgent extends EventEmitter {
     // Cargo geiger (unsafe code detection)
     try {
       const { stdout } = await execAsync('cargo geiger --output-format Json', {
-        cwd: 'programs/icb-core'
+        cwd: 'programs/ars-core'
       });
       const report = JSON.parse(stdout);
 
@@ -223,7 +223,7 @@ export class SecurityAgent extends EventEmitter {
       try {
         const { stdout } = await execAsync(
           `cargo test pentest_${test} -- --nocapture`,
-          { cwd: 'programs/icb-core', timeout: 30000 }
+          { cwd: 'programs/ars-core', timeout: 30000 }
         );
 
         results.push({

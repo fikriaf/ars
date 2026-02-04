@@ -1,4 +1,4 @@
-# Quick Start - Build & Deploy ICB Protocol
+# Quick Start - Build & Deploy ARS Protocol
 
 ## TL;DR - Fast Track to Deployment
 
@@ -18,9 +18,9 @@ anchor deploy --provider.cluster devnet
 ## What's Ready
 
 ✅ **All 3 smart contracts fully implemented** (~3,200 lines of Rust)
-- ICB Core: ILI oracle, futarchy governance, circuit breaker
-- ICB Reserve: Multi-asset vault, VHR calculation, rebalancing
-- ICU Token: Controlled mint/burn with epoch caps
+- ARS Core: ILI oracle, futarchy governance, circuit breaker
+- ARS Reserve: Multi-asset vault, VHR calculation, rebalancing
+- ARU Token: Controlled mint/burn with epoch caps
 
 ✅ **Configuration files updated to Anchor 0.29.0**
 ✅ **All development tools installed**
@@ -35,9 +35,9 @@ solana-verify build
 
 ### Option 2: Build Each Program Separately
 ```bash
-cargo build-sbf --manifest-path programs/icb-core/Cargo.toml
-cargo build-sbf --manifest-path programs/icb-reserve/Cargo.toml
-cargo build-sbf --manifest-path programs/icb-token/Cargo.toml
+cargo build-sbf --manifest-path programs/ars-core/Cargo.toml
+cargo build-sbf --manifest-path programs/ars-reserve/Cargo.toml
+cargo build-sbf --manifest-path programs/ars-token/Cargo.toml
 ```
 
 ## After Successful Deployment
@@ -58,7 +58,7 @@ cargo build-sbf --manifest-path programs/icb-token/Cargo.toml
 
 ```
 programs/
-├── icb-core/          # Main protocol logic (7 instructions)
+├── ars-core/          # Main protocol logic (7 instructions)
 │   ├── initialize
 │   ├── update_ili
 │   ├── query_ili
@@ -66,13 +66,13 @@ programs/
 │   ├── vote_on_proposal
 │   ├── execute_proposal
 │   └── circuit_breaker
-├── icb-reserve/       # Vault management (5 instructions)
+├── ars-reserve/       # Vault management (5 instructions)
 │   ├── initialize_vault
 │   ├── deposit
 │   ├── withdraw
 │   ├── rebalance
 │   └── update_vhr
-└── icb-token/         # ICU token (4 instructions)
+└── ars-token/         # ARU token (4 instructions)
     ├── initialize_mint
     ├── mint_icu
     ├── burn_icu
@@ -84,16 +84,16 @@ programs/
 ```
 target/
 ├── deploy/
-│   ├── icb_core.so
-│   ├── icb_core-keypair.json
-│   ├── icb_reserve.so
-│   ├── icb_reserve-keypair.json
-│   ├── icb_token.so
-│   └── icb_token-keypair.json
+│   ├── ars_core.so
+│   ├── ars_core-keypair.json
+│   ├── ars_reserve.so
+│   ├── ars_reserve-keypair.json
+│   ├── ars_token.so
+│   └── ars_token-keypair.json
 └── idl/
-    ├── icb_core.json
-    ├── icb_reserve.json
-    └── icb_token.json
+    ├── ars_core.json
+    ├── ars_reserve.json
+    └── ars_token.json
 ```
 
 ## Verify Deployment

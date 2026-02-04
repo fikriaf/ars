@@ -306,7 +306,7 @@ export class PolicyAgent extends EventEmitter {
     const message = {
       type: 'agent-response',
       from: this.agentId,
-      to: 'icb-orchestrator',
+      to: 'ars-orchestrator',
       payload: {
         ...response,
         agent: this.agentId,

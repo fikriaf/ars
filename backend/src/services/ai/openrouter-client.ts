@@ -75,7 +75,7 @@ export class OpenRouterClient {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${config.apis.openRouterApiKey}`,
         'HTTP-Referer': config.apis.openRouterReferer || 'https://internet-capital-bank.com',
-        'X-Title': 'Internet Capital Bank',
+        'X-Title': 'Agentic Reserve System',
       },
     });
 
@@ -233,7 +233,7 @@ export class OpenRouterClient {
       {
         role: 'system',
         content:
-          'You are an expert DeFi analyst for Internet Capital Bank. Analyze ILI (Internet Liquidity Index) data and provide insights.',
+          'You are an expert DeFi analyst for Agentic Reserve System. Analyze ILI (Internet Liquidity Index) data and provide insights.',
       },
       {
         role: 'user',
@@ -275,7 +275,7 @@ Provide a brief analysis of the ILI trend and market conditions.`,
       {
         role: 'system',
         content:
-          'You are a monetary policy advisor for Internet Capital Bank. Generate policy recommendations based on market data.',
+          'You are a monetary policy advisor for Agentic Reserve System. Generate policy recommendations based on market data.',
       },
       {
         role: 'user',
@@ -284,7 +284,7 @@ ICR: ${params.icr}%
 VHR: ${params.vhr}%
 Market Conditions: ${params.marketConditions}
 
-What monetary policy action should ICB take? Consider mint/burn ICU, adjust reserves, or maintain status quo.`,
+What monetary policy action should ARS take? Consider mint/burn ARU, adjust reserves, or maintain status quo.`,
       },
     ];
 
@@ -317,7 +317,7 @@ What monetary policy action should ICB take? Consider mint/burn ICU, adjust rese
       {
         role: 'system',
         content:
-          'You are a governance analyst for Internet Capital Bank. Analyze proposals and provide recommendations.',
+          'You are a governance analyst for Agentic Reserve System. Analyze proposals and provide recommendations.',
       },
       {
         role: 'user',

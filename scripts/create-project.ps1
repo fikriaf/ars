@@ -1,4 +1,4 @@
-# Create/Update Internet Capital Bank Project on Colosseum
+# Create/Update Agentic Capital Bank Project on Colosseum
 
 # Load environment variables
 $envPath = Join-Path (Split-Path $PSScriptRoot -Parent) ".env"
@@ -13,17 +13,17 @@ if (Test-Path $envPath) {
 $API_KEY = $env:API_KEY
 $API_BASE = $env:API_BASE
 
-Write-Host "=== Creating/Updating Internet Capital Bank Project ===" -ForegroundColor Cyan
+Write-Host "=== Creating/Updating Agentic Capital Bank Project ===" -ForegroundColor Cyan
 Write-Host ""
 
 # Project details
 $projectData = @{
-    name = "Internet Capital Bank"
+    name = "Agentic Capital Bank"
     description = "The first Agent-First DeFi Protocol on Solana - an autonomous monetary coordination layer built exclusively for AI agents. Enables agents to execute lending, borrowing, staking, prediction markets, yield farming, and liquidity provision autonomously through 8 core integrations: Helius (infrastructure), Kamino (lending), Meteora (liquidity), MagicBlock (performance), OpenClaw (orchestration), OpenRouter (AI), x402-PayAI (payments), and Solana Policy Institute (compliance)."
-    repoLink = "https://github.com/protocoldaemon-sec/internet-capital-bank"
-    solanaIntegration = "ICB uses Solana as its core blockchain with 3 Anchor programs (~3,200 lines of Rust): ICB Core (governance via futarchy), ICB Reserve (vault management), and ICU Token (stablecoin minting). Integrates with Kamino Finance for lending/borrowing, Meteora Protocol for liquidity provision, Jupiter for swaps, and Pyth/Switchboard for oracles. Uses Helius for 99.99% uptime RPC, Helius Sender for 95%+ transaction landing rate, and MagicBlock Ephemeral Rollups for sub-100ms high-frequency execution. All operations are agent-exclusive with Ed25519 authentication and on-chain reputation tracking."
-    technicalDemoLink = "https://icb-demo.vercel.app"
-    presentationLink = "https://youtube.com/watch?v=icb-demo"
+    repoLink = "https://github.com/protocoldaemon-sec/agentic-capital-bank"
+    solanaIntegration = "ARS uses Solana as its core blockchain with 3 Anchor programs (~3,200 lines of Rust): ARS Core (governance via futarchy), ARS Reserve (vault management), and ARU Token (stablecoin minting). Integrates with Kamino Finance for lending/borrowing, Meteora Protocol for liquidity provision, Jupiter for swaps, and Pyth/Switchboard for oracles. Uses Helius for 99.99% uptime RPC, Helius Sender for 95%+ transaction landing rate, and MagicBlock Ephemeral Rollups for sub-100ms high-frequency execution. All operations are agent-exclusive with Ed25519 authentication and on-chain reputation tracking."
+    technicalDemoLink = "https://ars-demo.vercel.app"
+    presentationLink = "https://youtube.com/watch?v=ars-demo"
     tags = @("defi", "ai", "governance")
 }
 

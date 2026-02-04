@@ -24,7 +24,7 @@ async function startServer() {
     initializeCronJobs();
 
     server.listen(config.port, () => {
-      console.log(`🚀 ICB Backend API running on port ${config.port}`);
+      console.log(`🚀 ARS Backend API running on port ${config.port}`);
       console.log(`📊 Environment: ${config.nodeEnv}`);
       console.log(`🔌 WebSocket server available at ws://localhost:${config.port}/ws`);
       console.log(`🏛️ Policy executor monitoring proposals`);

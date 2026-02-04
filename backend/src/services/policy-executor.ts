@@ -88,7 +88,7 @@ export class PolicyExecutor {
         
         await this.updateProposalStatus(proposal.id, 'executed', txSignature);
         
-        // Collect proposal fee (10 ICU burned)
+        // Collect proposal fee (10 ARU burned)
         await this.recordProposalFee(proposal.id, proposal.proposer);
         
         console.log(`✅ Proposal ${proposal.id} executed successfully`);
@@ -133,8 +133,8 @@ export class PolicyExecutor {
 
   private async executeMint(params: any): Promise<string> {
     // Simulate mint transaction
-    // In production, this would interact with the ICU token program
-    console.log(`Minting ${params.amount} ICU tokens`);
+    // In production, this would interact with the ARU token program
+    console.log(`Minting ${params.amount} ARU tokens`);
     
     // Mock transaction signature
     const txSignature = `mint_${Date.now()}_${Math.random().toString(36).substring(7)}`;
@@ -152,7 +152,7 @@ export class PolicyExecutor {
 
   private async executeBurn(params: any): Promise<string> {
     // Simulate burn transaction
-    console.log(`Burning ${params.amount} ICU tokens`);
+    console.log(`Burning ${params.amount} ARU tokens`);
     
     const txSignature = `burn_${Date.now()}_${Math.random().toString(36).substring(7)}`;
     
@@ -219,7 +219,7 @@ export class PolicyExecutor {
     await supabase.from('revenue_events').insert({
       revenue_type: 'proposal_fee',
       agent_pubkey: proposer,
-      amount_usd: 10, // 10 ICU burned
+      amount_usd: 10, // 10 ARU burned
       amount_icu: 10,
       timestamp: new Date().toISOString(),
       metadata: { proposal_id: proposalId },

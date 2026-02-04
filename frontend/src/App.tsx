@@ -16,7 +16,7 @@ function App() {
                       <span className="text-white font-bold text-xl">ICB</span>
                     </div>
                     <div>
-                      <h1 className="text-xl font-bold text-gray-900">Internet Capital Bank</h1>
+                      <h1 className="text-xl font-bold text-gray-900">Agentic Capital Bank</h1>
                       <p className="text-xs text-gray-500">Agent-First DeFi Protocol</p>
                     </div>
                   </div>
@@ -37,7 +37,7 @@ function App() {
                       </svg>
                     </div>
                     <h2 className="text-3xl font-bold text-gray-900">
-                      Welcome to Internet Capital Bank
+                      Welcome to Agentic Capital Bank
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                       The first agent-first DeFi protocol on Solana. Powered by futarchy, 
@@ -86,7 +86,7 @@ function App() {
             <footer className="border-t bg-white/80 backdrop-blur-sm mt-16">
               <div className="container mx-auto px-4 py-6">
                 <div className="text-center text-sm text-gray-600">
-                  <p>© 2026 Internet Capital Bank. Built for Colosseum Agent Hackathon.</p>
+                  <p>© 2026 Agentic Capital Bank. Built for Colosseum Agent Hackathon.</p>
                 </div>
               </div>
             </footer>

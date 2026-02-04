@@ -83,7 +83,7 @@ router.get('/:pubkey/staking', async (req: Request, res: Response) => {
   }
 });
 
-// POST /agents/:pubkey/stake - Stake ICU tokens
+// POST /agents/:pubkey/stake - Stake ARU tokens
 router.post('/:pubkey/stake', async (req: Request, res: Response) => {
   try {
     const { pubkey } = req.params;

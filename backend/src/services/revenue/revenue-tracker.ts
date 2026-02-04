@@ -32,7 +32,7 @@ export class RevenueTracker {
   private readonly ER_SESSION_FEE_RATE = 0.0002; // 0.02%
   private readonly AI_USAGE_MARKUP = 0.10; // 10%
   private readonly VAULT_MANAGEMENT_FEE_RATE = 0.001; // 0.1% annually
-  private readonly PROPOSAL_FEE_ICU = 10; // 10 ICU burned
+  private readonly PROPOSAL_FEE_ICU = 10; // 10 ARU burned
 
   // Oracle query fees
   private readonly ORACLE_FEES = {
@@ -158,7 +158,7 @@ export class RevenueTracker {
   }
 
   /**
-   * Track proposal fee (10 ICU burned)
+   * Track proposal fee (10 ARU burned)
    */
   async trackProposalFee(
     proposalId: string,
@@ -179,10 +179,10 @@ export class RevenueTracker {
       timestamp: new Date()
     });
 
-    // Update ICU total supply (burn)
+    // Update ARU total supply (burn)
     await this.burnICU(this.PROPOSAL_FEE_ICU);
 
-    console.log(`💰 Proposal fee: ${this.PROPOSAL_FEE_ICU} ICU burned ($${feeAmountUSD.toFixed(2)})`);
+    console.log(`💰 Proposal fee: ${this.PROPOSAL_FEE_ICU} ARU burned ($${feeAmountUSD.toFixed(2)})`);
   }
 
   /**
@@ -329,13 +329,13 @@ export class RevenueTracker {
   }
 
   /**
-   * Execute ICU buyback via Jupiter
+   * Execute ARU buyback via Jupiter
    */
   private async executeBuyback(usdcAmount: number): Promise<void> {
     try {
-      console.log(`🔄 Executing ICU buyback: $${usdcAmount.toFixed(2)}`);
+      console.log(`🔄 Executing ARU buyback: $${usdcAmount.toFixed(2)}`);
 
-      // Get quote for USDC -> ICU swap
+      // Get quote for USDC -> ARU swap
       const quote = await this.jupiter.getQuote({
         inputMint: 'USDC_MINT_ADDRESS',
         outputMint: 'ICU_MINT_ADDRESS',
@@ -346,9 +346,9 @@ export class RevenueTracker {
       // Execute swap
       // const swapResult = await this.jupiter.swap(quote, payerKeypair);
 
-      console.log(`✅ Buyback executed: ${quote.outAmount} ICU`);
+      console.log(`✅ Buyback executed: ${quote.outAmount} ARU`);
 
-      // Burn bought ICU
+      // Burn bought ARU
       await this.burnICU(quote.outAmount / LAMPORTS_PER_SOL);
     } catch (error) {
       console.error('Buyback failed:', error);
@@ -356,7 +356,7 @@ export class RevenueTracker {
   }
 
   /**
-   * Distribute staking rewards to ICU stakers
+   * Distribute staking rewards to ARU stakers
    */
   private async distributeStakingRewards(amount: number): Promise<void> {
     console.log(`💎 Distributing staking rewards: $${amount.toFixed(2)}`);
@@ -410,7 +410,7 @@ export class RevenueTracker {
   }
 
   /**
-   * Burn ICU tokens
+   * Burn ARU tokens
    */
   private async burnICU(amount: number): Promise<void> {
     // Update total supply in database
@@ -423,10 +423,10 @@ export class RevenueTracker {
       .eq('id', 1);
 
     if (error) {
-      console.error('Failed to update ICU supply:', error);
+      console.error('Failed to update ARU supply:', error);
     }
 
-    console.log(`🔥 Burned ${amount} ICU tokens`);
+    console.log(`🔥 Burned ${amount} ARU tokens`);
   }
 
   /**

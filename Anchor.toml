@@ -6,9 +6,9 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-icb_core = "EpzmAas4F7XAWeHht7Yp3wTDcTciKLmXkhqaR5JhfCHE"
-icb_reserve = "yiUCxoup6Jh7pcUsyZ8zR93kA13ecQX6EDdSEkGapQx"
-icb_token = "9ABvYDxGzRErKe7Y4DECXJzLtKTeTabgkLjyTqv3P54j"
+ars_core = "EpzmAas4F7XAWeHht7Yp3wTDcTciKLmXkhqaR5JhfCHE"
+ars_reserve = "yiUCxoup6Jh7pcUsyZ8zR93kA13ecQX6EDdSEkGapQx"
+ars_token = "9ABvYDxGzRErKe7Y4DECXJzLtKTeTabgkLjyTqv3P54j"
 
 [registry]
 url = "https://api.apr.dev"
@@ -18,7 +18,7 @@ cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [workspace]
-members = ["programs/icb-core", "programs/icb-reserve", "programs/icb-token"]
+members = ["programs/ars-core", "programs/ars-reserve", "programs/ars-token"]
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

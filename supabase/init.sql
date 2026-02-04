@@ -1,4 +1,4 @@
--- Internet Capital Bank - Database Initialization
+-- Agentic Capital Bank - Database Initialization
 -- This script sets up the database schema and Row Level Security
 
 -- Enable necessary extensions
@@ -217,5 +217,5 @@ GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO anon, authenticated, service_role
 -- Success message
 DO $$
 BEGIN
-    RAISE NOTICE 'Internet Capital Bank database initialized successfully!';
+    RAISE NOTICE 'Agentic Capital Bank database initialized successfully!';
 END $$;

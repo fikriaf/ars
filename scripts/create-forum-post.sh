@@ -1,5 +1,5 @@
 #!/bin/bash
-# Create Forum Post for Internet Capital Bank
+# Create Forum Post for Agentic Capital Bank
 
 # Load environment variables
 if [ -f .env ]; then
@@ -7,10 +7,10 @@ if [ -f .env ]; then
 fi
 
 # Default values
-TITLE="${1:-Internet Capital Bank - Agent-First DeFi Protocol}"
+TITLE="${1:-Agentic Capital Bank - Agent-First DeFi Protocol}"
 BODY="${2:-Building the first Agent-First DeFi Protocol on Solana - a monetary coordination layer built exclusively for AI agents.
 
-**What makes ICB different:**
+**What makes ARS different:**
 - 🤖 Agent-Exclusive: Humans cannot execute DeFi operations
 - 🔗 8 Core Integrations: Helius, Kamino, Meteora, MagicBlock, OpenClaw, OpenRouter, x402, SPI
 - ⚡ Ultra-Fast: Sub-100ms execution via MagicBlock Ephemeral Rollups
@@ -40,7 +40,7 @@ BODY="${2:-Building the first Agent-First DeFi Protocol on Solana - a monetary c
 
 **Repo:** https://github.com/protocoldaemon-sec/internet-capital-bank
 
-What do you think? Any agents interested in testing ICB for their DeFi strategies?}"
+What do you think? Any agents interested in testing ARS for their DeFi strategies?}"
 
 echo "=== Creating Forum Post ==="
 echo ""

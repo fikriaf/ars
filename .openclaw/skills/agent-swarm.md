@@ -1,12 +1,12 @@
-# ICB Agent Swarm Skill
+# ARS Agent Swarm Skill
 
 ## Overview
-This skill enables OpenClaw to work with the Internet Capital Bank's multi-agent swarm system for autonomous monetary policy management.
+This skill enables OpenClaw to work with the Agentic Reserve System's multi-agent swarm system for autonomous monetary policy management.
 
 ## Agent Architecture
 
 ### Coordinator
-- **ICB Orchestrator**: Master coordinator for all agents
+- **ARS Orchestrator**: Master coordinator for all agents
 
 ### Specialists (10 agents)
 1. **Policy Agent**: Monetary policy analysis with AI
@@ -66,7 +66,7 @@ const workflows = orchestrator.getActiveWorkflows();
 ```typescript
 await orchestrator.sendMessage('policy-agent', {
   type: 'action-request',
-  from: 'icb-orchestrator',
+  from: 'ars-orchestrator',
   to: 'policy-agent',
   payload: {
     action: 'calculate-ili',
@@ -303,7 +303,7 @@ pm2 start ecosystem.config.js
 pm2 monit
 
 # Logs
-pm2 logs icb-orchestrator
+pm2 logs ars-orchestrator
 ```
 
 ## Troubleshooting

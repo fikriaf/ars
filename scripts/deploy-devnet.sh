@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# ICB Protocol - Devnet Deployment Script
+# ARS Protocol - Devnet Deployment Script
 # This script deploys all three programs to Solana devnet
 
 set -e
 
 echo "========================================="
-echo "ICB Protocol - Devnet Deployment"
+echo "ARS Protocol - Devnet Deployment"
 echo "========================================="
 echo ""
 
@@ -62,9 +62,9 @@ anchor keys list
 
 echo ""
 echo "Next steps:"
-echo "1. Initialize the ICB Core program"
+echo "1. Initialize the ARS Core program"
 echo "2. Initialize the Reserve Vault"
-echo "3. Initialize the ICU Token"
+echo "3. Initialize the ARU Token"
 echo "4. Update the frontend with program IDs"
 echo ""
 echo "Run: npm run initialize-programs"

@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'icb-orchestrator',
+      name: 'ars-orchestrator',
       script: 'backend/src/services/agent-swarm/orchestrator.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -20,7 +20,7 @@ module.exports = {
       merge_logs: true
     },
     {
-      name: 'icb-backend',
+      name: 'ars-backend',
       script: 'backend/src/index.ts',
       interpreter: 'ts-node',
       instances: 2,
@@ -38,7 +38,7 @@ module.exports = {
       merge_logs: true
     },
     {
-      name: 'icb-policy-agent',
+      name: 'ars-policy-agent',
       script: 'backend/src/services/agent-swarm/agents/policy-agent.ts',
       interpreter: 'ts-node',
       instances: 1,
@@ -54,7 +54,7 @@ module.exports = {
       merge_logs: true
     },
     {
-      name: 'icb-security-agent',
+      name: 'ars-security-agent',
       script: 'backend/src/services/agent-swarm/agents/security-agent.ts',
       interpreter: 'ts-node',
       instances: 1,
