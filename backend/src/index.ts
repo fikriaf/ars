@@ -2,6 +2,7 @@ import http from 'http';
 import { createApp } from './app';
 import { WebSocketService } from './services/websocket';
 import { PolicyExecutor } from './services/policy-executor';
+import { initializeCronJobs, runInitialUpdates } from './cron';
 import { config } from './config';
 
 async function startServer() {
@@ -16,11 +17,18 @@ async function startServer() {
     const policyExecutor = new PolicyExecutor();
     policyExecutor.start();
 
+    // Run initial ILI and ICR calculations
+    await runInitialUpdates();
+
+    // Initialize cron jobs for scheduled updates
+    initializeCronJobs();
+
     server.listen(config.port, () => {
       console.log(`🚀 ICB Backend API running on port ${config.port}`);
       console.log(`📊 Environment: ${config.nodeEnv}`);
       console.log(`🔌 WebSocket server available at ws://localhost:${config.port}/ws`);
       console.log(`🏛️ Policy executor monitoring proposals`);
+      console.log(`⏰ Cron jobs active: ILI (5min), ICR (10min)`);
     });
 
     // Graceful shutdown
