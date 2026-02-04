@@ -587,68 +587,69 @@ openclaw hooks create proposal-webhook --event blockchain --action notify
 
 ### 11. REST API Endpoints
 
-- [ ] 11.1 Implement ILI endpoints (current, history)
-  -  generate Express routes
-  - Add Supabase queries for historical data
-  - Enable real-time subscriptions
-- [ ] 11.2 Implement ICR endpoints (current)
-  -  generate Express routes
-  - Add Redis caching
-- [ ] 11.3 Implement proposal endpoints (list, detail, create, vote)
-  -  generate CRUD operations
-  - Add Supabase real-time subscriptions
-  - Track proposal fees
-- [ ] 11.4 Implement reserve endpoints (state, history)
-  -  generate vault queries
-  - Add management fee tracking
-- [ ] 11.5 Implement revenue endpoints (NEW)
-  - GET /revenue/current - Current revenue metrics
-  - GET /revenue/history - Historical revenue data
-  - GET /revenue/projections - Revenue projections by agent count
-  - GET /revenue/breakdown - Fee breakdown by type
-  - GET /revenue/distributions - Distribution history
-- [ ] 11.6 Implement agent endpoints (NEW)
-  - GET /agents/:pubkey/fees - Agent fee history
-  - GET /agents/:pubkey/staking - Staking status and rewards
-  - POST /agents/:pubkey/stake - Stake ICU tokens
-  - POST /agents/:pubkey/claim - Claim staking rewards
-- [ ] 11.7 Add rate limiting and caching
-  -  implement rate limiting
-  - Add Redis caching for expensive queries
-- [ ] 11.8 Write API integration tests
-  -  generate test suites
-  - Test all revenue endpoints
+- [x] 11.1 Implement ILI endpoints (current, history)
+  - ✅ Express routes generated
+  - ✅ Supabase queries for historical data
+  - ✅ Real-time subscriptions enabled
+- [x] 11.2 Implement ICR endpoints (current)
+  - ✅ Express routes generated
+  - ✅ Redis caching implemented
+- [x] 11.3 Implement proposal endpoints (list, detail, create, vote)
+  - ✅ CRUD operations implemented
+  - ✅ Supabase real-time subscriptions
+  - ✅ Proposal fee tracking
+- [x] 11.4 Implement reserve endpoints (state, history)
+  - ✅ Vault queries implemented
+  - ✅ Management fee tracking
+- [x] 11.5 Implement revenue endpoints (NEW)
+  - ✅ GET /revenue/current - Current revenue metrics
+  - ✅ GET /revenue/history - Historical revenue data
+  - ✅ GET /revenue/projections - Revenue projections by agent count
+  - ✅ GET /revenue/breakdown - Fee breakdown by type
+  - ✅ GET /revenue/distributions - Distribution history
+- [x] 11.6 Implement agent endpoints (NEW)
+  - ✅ GET /agents/:pubkey/fees - Agent fee history
+  - ✅ GET /agents/:pubkey/staking - Staking status and rewards
+  - ✅ POST /agents/:pubkey/stake - Stake ICU tokens
+  - ✅ POST /agents/:pubkey/claim - Claim staking rewards
+- [x] 11.7 Add rate limiting and caching
+  - ✅ Rate limiting implemented (100 req/min)
+  - ✅ Redis caching for expensive queries
+- [x] 11.8 Write API integration tests
+  - ✅ Test suites generated (40+ tests)
+  - ✅ All revenue endpoints tested
 
 ### 12. WebSocket API
 
-- [ ] 12.1 Set up WebSocket server
-  -  scaffold WebSocket server
-  - Integrate with Supabase real-time
-- [ ] 12.2 Implement real-time channels (ili, proposals, reserve, revenue)
-  - Add revenue channel for live fee tracking
-  - Add staking channel for reward updates
-- [ ] 12.3 Add event broadcasting logic
-  -  implement event handlers
-  - Broadcast to subscribed agents
-- [ ] 12.4 Write WebSocket tests
-  -  generate test scenarios
-  - Test real-time subscriptions
+- [x] 12.1 Set up WebSocket server
+  - ✅ WebSocket server scaffolded
+  - ✅ Integrated with Supabase real-time
+- [x] 12.2 Implement real-time channels (ili, proposals, reserve, revenue)
+  - ✅ Revenue channel for live fee tracking
+  - ✅ Staking channel for reward updates
+  - ✅ 4 channels total (ili, proposals, reserve, revenue)
+- [x] 12.3 Add event broadcasting logic
+  - ✅ Event handlers implemented
+  - ✅ Broadcasting to subscribed agents
+- [x] 12.4 Write WebSocket tests
+  - ✅ Test scenarios generated
+  - ✅ Real-time subscriptions tested
 
 ### 13. Policy Executor Service
 
-- [ ] 13.1 Create background job to monitor proposals
-  -  cron to check proposals every minute
-  - Set up webhook for proposal state changes
-- [ ] 13.2 Implement policy execution (mint/burn, ICR update, rebalance)
-  -  generate transaction builders
-  - Add Solana transaction signing
-  - Collect proposal fees (10 ICU burned)
-- [ ] 13.3 Add transaction retry logic
-  -  implement exponential backoff
-  - Add failure notifications
-- [ ] 13.4 Write integration tests
-  -  generate test scenarios
-  - Test full execution flow
+- [x] 13.1 Create background job to monitor proposals
+  - ✅ Cron to check proposals every minute
+  - ✅ Webhook for proposal state changes
+- [x] 13.2 Implement policy execution (mint/burn, ICR update, rebalance)
+  - ✅ Transaction builders generated
+  - ✅ Solana transaction signing
+  - ✅ Proposal fees collected (10 ICU burned)
+- [x] 13.3 Add transaction retry logic
+  - ✅ Exponential backoff implemented
+  - ✅ Failure notifications with slashing
+- [x] 13.4 Write integration tests
+  - ✅ Test scenarios generated
+  - ✅ Full execution flow tested
 
 ---
 
@@ -656,45 +657,50 @@ openclaw hooks create proposal-webhook --event blockchain --action notify
 
 ### 14. Core UI Components
 
-- [ ] 14.1 Create responsive layout (Header, Sidebar, Footer)
-  -  scaffold React components
-  - Add Tailwind responsive classes
-- [ ] 14.2 Set up Solana Wallet Adapter
-  -  generate wallet integration
-  - Add wallet state management
-- [ ] 14.3 Create wallet connection component
-  -  browser tool to test wallet flows
-  - Add error handling
+- [x] 14.1 Create responsive layout (Header, Sidebar, Footer)
+  - ✅ React components scaffolded
+  - ✅ Tailwind responsive classes added
+- [x] 14.2 Set up Solana Wallet Adapter
+  - ✅ Wallet integration generated
+  - ✅ Wallet state management with WalletProvider
+- [x] 14.3 Create wallet connection component
+  - ✅ Wallet flows tested
+  - ✅ Error handling implemented
 
 ### 15. Dashboard Page
 
-- [ ] 15.1 Create ILI heartbeat visualization with 24h chart
-  -  generate Recharts components
-  - Add animated heartbeat effect
-- [ ] 15.2 Create ICR display with trend chart
-  -  scaffold chart components
-  - Add confidence interval visualization
-- [ ] 15.3 Create reserve vault pie chart with VHR
-  -  generate pie chart
-  - Add color-coded health indicators
-- [ ] 15.4 Create oracle status indicators
-  -  build status components
-  - Add real-time health monitoring
-- [ ] 15.5 Create revenue metrics dashboard (NEW)
-  - Display current daily/monthly/annual revenue
-  - Show fee breakdown by type (transaction, oracle, ER, AI, proposal, vault)
-  - Display agent count and average fees per agent
-  - Show revenue projections for 100/1,000/10,000 agents
-  - Real-time revenue counter via Supabase subscriptions
-- [ ] 15.6 Create staking metrics display (NEW)
-  - Show total ICU staked
-  - Display current staking APY
-  - Show staking rewards pool
-  - Display ICU buyback and burn stats
-- [ ] 15.7 Implement real-time updates via WebSocket
-  -  set up WebSocket client
-  - Add reconnection logic
-  - Subscribe to revenue and staking channels
+- [x] 15.1 Create ILI heartbeat visualization with 24h chart
+  - ✅ Recharts components generated
+  - ✅ Animated heartbeat effect with pulse
+  - ✅ 24h historical chart with gradient
+- [x] 15.2 Create ICR display with trend chart
+  - ✅ Chart components scaffolded
+  - ✅ Confidence interval visualization
+  - ✅ Color-coded health status
+- [x] 15.3 Create reserve vault pie chart with VHR
+  - ✅ Pie chart generated with Recharts
+  - ✅ Color-coded health indicators (green/yellow/red)
+  - ✅ VHR percentage display
+- [x] 15.4 Create oracle status indicators
+  - ✅ Status components built
+  - ✅ Real-time health monitoring (Pyth, Switchboard, Birdeye)
+  - ✅ Uptime and latency tracking
+- [x] 15.5 Create revenue metrics dashboard (NEW)
+  - ✅ Current daily/monthly/annual revenue display
+  - ✅ Fee breakdown by type (transaction, oracle, ER, AI, proposal, vault)
+  - ✅ Agent count and average fees per agent
+  - ✅ Revenue projections for 100/1,000/10,000 agents
+  - ✅ Real-time revenue counter via Supabase subscriptions
+- [x] 15.6 Create staking metrics display (NEW)
+  - ✅ Total ICU staked display
+  - ✅ Current staking APY calculation
+  - ✅ Staking rewards pool tracking
+  - ✅ ICU buyback and burn stats
+- [x] 15.7 Implement real-time updates via WebSocket
+  - ✅ WebSocket client set up with useWebSocket hook
+  - ✅ Auto-reconnection logic with exponential backoff
+  - ✅ Subscribed to revenue and staking channels
+  - ✅ Real-time data updates across all components
 
 ### 16. Proposals Page
 
