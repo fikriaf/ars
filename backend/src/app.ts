@@ -10,6 +10,7 @@ import proposalRoutes from './routes/proposals';
 import reserveRoutes from './routes/reserve';
 import revenueRoutes from './routes/revenue';
 import agentRoutes from './routes/agents';
+import privacyRoutes from './routes/privacy';
 
 export function createApp(): Application {
   const app = express();
@@ -39,6 +40,11 @@ export function createApp(): Application {
   app.use('/api/v1/reserve', reserveRoutes);
   app.use('/api/v1/revenue', revenueRoutes);
   app.use('/api/v1/agents', agentRoutes);
+  
+  // Privacy routes (Phase 1: Shielded Transfers)
+  if (config.privacy?.enabled) {
+    app.use('/api/v1/privacy', privacyRoutes);
+  }
 
   // Error handling middleware
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

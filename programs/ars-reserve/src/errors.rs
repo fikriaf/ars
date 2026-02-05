@@ -25,4 +25,16 @@ pub enum ReserveError {
     
     #[msg("Reentrancy detected")]
     ReentrancyDetected,
+    
+    #[msg("Rebalance attempted too frequently")]
+    RebalanceTooFrequent,
+    
+    #[msg("Invalid account owner")]
+    InvalidAccountOwner,
+    
+    #[msg("Slippage tolerance exceeded")]
+    SlippageExceeded,
+    
+    #[msg("Invalid PDA derivation")]
+    InvalidPDA,
 }

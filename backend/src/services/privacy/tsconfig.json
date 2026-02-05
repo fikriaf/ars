@@ -1,0 +1,21 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@privacy/*": ["./*"],
+      "@privacy/sipher": ["./sipher"],
+      "@privacy/stealth": ["./stealth"],
+      "@privacy/shielded": ["./shielded"],
+      "@privacy/scanning": ["./scanning"]
+    }
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

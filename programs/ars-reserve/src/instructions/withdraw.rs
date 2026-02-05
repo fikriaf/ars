@@ -3,21 +3,7 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::state::*;
 use crate::errors::ReserveError;
 use crate::instructions::initialize_vault::VAULT_SEED;
-
-/// Reentrancy guard helper
-#[inline]
-fn acquire_lock(locked: &mut bool) -> Result<()> {
-    if *locked {
-        return err!(ReserveError::ReentrancyDetected);
-    }
-    *locked = true;
-    Ok(())
-}
-
-#[inline]
-fn release_lock(locked: &mut bool) {
-    *locked = false;
-}
+use crate::utils::ReentrancyGuard;
 
 #[derive(Accounts)]
 pub struct Withdraw<'info> {
@@ -29,7 +15,10 @@ pub struct Withdraw<'info> {
     )]
     pub vault: Account<'info, ReserveVault>,
     
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = vault_token_account.owner == vault.key() @ ReserveError::InvalidAccountOwner
+    )]
     pub vault_token_account: Account<'info, TokenAccount>,
     
     #[account(mut)]
@@ -50,10 +39,28 @@ pub fn handler(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
     let vault = &mut ctx.accounts.vault;
     
     // Acquire reentrancy lock
-    acquire_lock(&mut vault.locked)?;
+    let _guard = ReentrancyGuard::acquire(&mut vault.locked)?;
     
-    // Transfer tokens from vault to recipient
-    let seeds = &[VAULT_SEED, &[vault.bump]];
+    // Check VHR after withdrawal would still be above threshold
+    let new_total_value = vault.total_value_usd
+        .checked_sub(amount)
+        .ok_or(ReserveError::ArithmeticUnderflow)?;
+    
+    // Calculate new VHR (simplified)
+    let new_vhr = if vault.liabilities_usd > 0 {
+        ((new_total_value as u128 * 10000) / vault.liabilities_usd as u128) as u16
+    } else {
+        10000 // 100% if no liabilities
+    };
+    
+    require!(
+        new_vhr >= vault.rebalance_threshold_bps,
+        ReserveError::VHRBelowThreshold
+    );
+    
+    // Transfer tokens from vault to recipient using PDA signer
+    let bump = vault.bump;
+    let seeds = &[VAULT_SEED, &[bump]];
     let signer = &[&seeds[..]];
     
     let cpi_accounts = Transfer {
@@ -65,14 +72,18 @@ pub fn handler(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
     let cpi_program = ctx.accounts.token_program.to_account_info();
     let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
     
-    let result = token::transfer(cpi_ctx, amount);
+    token::transfer(cpi_ctx, amount)?;
     
-    // Release lock before returning
-    release_lock(&mut vault.locked);
-    
-    result?;
+    // Update vault state
+    vault.total_value_usd = new_total_value;
+    vault.vhr = new_vhr;
     
     msg!("Withdrawn {} tokens from vault", amount);
+    msg!("New vault total value: {} USD", vault.total_value_usd);
+    msg!("New VHR: {} bps", vault.vhr);
+    
+    // Release lock
+    ReentrancyGuard::release(&mut vault.locked);
     
     Ok(())
 }

@@ -2,21 +2,7 @@ use anchor_lang::prelude::*;
 use crate::state::*;
 use crate::errors::ReserveError;
 use crate::instructions::initialize_vault::VAULT_SEED;
-
-/// Reentrancy guard helper
-#[inline]
-fn acquire_lock(locked: &mut bool) -> Result<()> {
-    if *locked {
-        return err!(ReserveError::ReentrancyDetected);
-    }
-    *locked = true;
-    Ok(())
-}
-
-#[inline]
-fn release_lock(locked: &mut bool) {
-    *locked = false;
-}
+use crate::utils::ReentrancyGuard;
 
 #[derive(Accounts)]
 pub struct Rebalance<'info> {
@@ -29,30 +15,49 @@ pub struct Rebalance<'info> {
     pub vault: Account<'info, ReserveVault>,
     
     pub authority: Signer<'info>,
+    
+    /// CHECK: Jupiter program for swap execution
+    /// This will be validated during CPI call
+    pub jupiter_program: UncheckedAccount<'info>,
 }
 
 pub fn handler(ctx: Context<Rebalance>) -> Result<()> {
     let vault = &mut ctx.accounts.vault;
     
     // Acquire reentrancy lock
-    acquire_lock(&mut vault.locked)?;
+    let _guard = ReentrancyGuard::acquire(&mut vault.locked)?;
     
     let clock = Clock::get()?;
+    
+    // Validate authority owns the vault
+    require!(
+        vault.authority == ctx.accounts.authority.key(),
+        ReserveError::Unauthorized
+    );
+    
+    // Check minimum time between rebalances (prevent spam)
+    let min_rebalance_interval = 3600; // 1 hour
+    require!(
+        clock.unix_timestamp >= vault.last_rebalance + min_rebalance_interval,
+        ReserveError::RebalanceTooFrequent
+    );
     
     vault.last_rebalance = clock.unix_timestamp;
     
     msg!("Vault rebalanced at: {}", clock.unix_timestamp);
     msg!("Current VHR: {} bps", vault.vhr);
     
-    // TODO: Implement actual rebalancing logic
+    // TODO: Implement actual rebalancing logic with CPI to Jupiter
     // This would involve:
     // 1. Calculate current asset weights
-    // 2. Compare with target weights
-    // 3. Execute swaps via Jupiter
-    // 4. Update vault composition
+    // 2. Compare with target weights (40% SOL, 30% USDC, 20% mSOL, 10% JitoSOL)
+    // 3. Calculate required swaps with slippage protection
+    // 4. Execute swaps via Jupiter CPI with invoke_signed
+    // 5. Update vault composition
+    // 6. Verify VHR remains above threshold
     
-    // Release lock before returning
-    release_lock(&mut vault.locked);
+    // Release lock
+    ReentrancyGuard::release(&mut vault.locked);
     
     Ok(())
 }

@@ -46,6 +46,20 @@ export const config = {
     openRouterReferer: process.env.OPENROUTER_REFERER || 'https://internet-capital-bank.com',
   },
   
+  sipher: {
+    url: process.env.SIPHER_API_URL || 'https://sipher.sip-protocol.org',
+    apiKey: process.env.SIPHER_API_KEY || '',
+    enabled: process.env.SIPHER_ENABLED === 'true',
+    timeout: parseInt(process.env.SIPHER_TIMEOUT || '30000', 10),
+  },
+  
+  privacy: {
+    enabled: process.env.PRIVACY_ENABLED === 'true',
+    mevProtectionEnabled: process.env.MEV_PROTECTION_ENABLED === 'true',
+    privacyScoreThreshold: parseInt(process.env.PRIVACY_SCORE_THRESHOLD || '70', 10),
+    mevReductionTarget: parseInt(process.env.MEV_REDUCTION_TARGET || '80', 10),
+  },
+  
   rateLimit: {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),
     maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10),

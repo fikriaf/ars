@@ -1,11 +1,12 @@
 import cron from 'node-cron';
 import { updateILI } from '../services/ili-calculator';
 import { updateICR } from '../services/icr-calculator';
+import { startPaymentScannerCron } from './payment-scanner';
 
 /**
  * Cron Job Scheduler
  * 
- * Schedules automated tasks for ILI and ICR updates
+ * Schedules automated tasks for ILI, ICR updates, and payment scanning
  */
 
 /**
@@ -34,9 +35,22 @@ export function initializeCronJobs(): void {
     }
   });
 
+  // Payment Scanner - Every 60 seconds (configurable)
+  if (process.env.PRIVACY_ENABLED === 'true') {
+    console.log('⏰ Starting payment scanner cron job');
+    try {
+      startPaymentScannerCron();
+    } catch (error) {
+      console.error('❌ Payment scanner cron job failed to start:', error);
+    }
+  }
+
   console.log('✅ Cron jobs initialized');
   console.log('   - ILI update: every 5 minutes');
   console.log('   - ICR update: every 10 minutes');
+  if (process.env.PRIVACY_ENABLED === 'true') {
+    console.log('   - Payment scanner: every 60 seconds');
+  }
 }
 
 /**
