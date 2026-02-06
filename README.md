@@ -505,7 +505,7 @@ Building the foundational reserve system for the Internet of Agents.
 - Pyth Network: Reliable price oracles
 - Helius: 99.99% uptime RPC infrastructure
 - Colosseum: For organizing the Agent Hackathon
-- Phalcon: Risk engine for AML/CFT compliance
+- Range: Risk engine for AML/CFT compliance
 - HexStrike AI: Offensive security testing framework
 
 ---
