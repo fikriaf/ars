@@ -73,9 +73,17 @@ class MetricsSupabaseClient {
     return this.client.rpc(fn, args);
   }
 
-  storage = this.client.storage;
-  auth = this.client.auth;
-  realtime = this.client.realtime;
+  get storage() {
+    return this.client.storage;
+  }
+
+  get auth() {
+    return this.client.auth;
+  }
+
+  get realtime() {
+    return this.client.realtime;
+  }
 }
 
 export function getSupabaseClient(): MetricsSupabaseClient {

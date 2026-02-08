@@ -1,13 +1,19 @@
+interface Asset {
+  symbol: string;
+  amount: number;
+  valueUsd: number;
+  percentage: number;
+}
+
 interface ReserveData {
-  totalValueUsd: number;
-  liabilitiesUsd: number;
-  vhr: number;
-  composition: Array<{
-    asset: string;
-    amount: number;
-    percentage: number;
-  }>;
-  lastRebalance: string;
+  vault: {
+    vhr: number;
+    totalValue: number;
+    liabilities: number;
+    assets: Asset[];
+    lastRebalance: number;
+    circuitBreakerActive: boolean;
+  };
 }
 
 interface Props {
@@ -25,7 +31,7 @@ export function ReserveChart({ data, loading }: Props) {
     );
   }
 
-  if (!data || data.composition.length === 0) {
+  if (!data || !data.vault || data.vault.assets.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -38,8 +44,9 @@ export function ReserveChart({ data, loading }: Props) {
     );
   }
 
-  const vhrColor = data.vhr >= 150 ? 'text-green-600' : data.vhr >= 130 ? 'text-yellow-600' : 'text-red-600';
-  const vhrBgColor = data.vhr >= 150 ? 'bg-green-50' : data.vhr >= 130 ? 'bg-yellow-50' : 'bg-red-50';
+  const { vault } = data;
+  const vhrColor = vault.vhr >= 150 ? 'text-green-600' : vault.vhr >= 130 ? 'text-yellow-600' : 'text-red-600';
+  const vhrBgColor = vault.vhr >= 150 ? 'bg-green-50' : vault.vhr >= 130 ? 'bg-yellow-50' : 'bg-red-50';
 
   const colors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-yellow-500', 'bg-red-500'];
 
@@ -52,23 +59,35 @@ export function ReserveChart({ data, loading }: Props) {
         </h2>
         <div className={`px-3 py-1 rounded-full ${vhrBgColor}`}>
           <span className={`text-sm font-semibold ${vhrColor}`}>
-            VHR: {data.vhr.toFixed(1)}%
+            VHR: {vault.vhr.toFixed(1)}%
           </span>
         </div>
       </div>
+
+      {/* Circuit Breaker Warning */}
+      {vault.circuitBreakerActive && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="text-sm font-medium text-red-800">
+            ⚠️ Circuit Breaker Active
+          </div>
+          <div className="text-xs text-red-600 mt-1">
+            VHR below 150% - minting and withdrawals paused
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="p-4 bg-gray-50 rounded-lg">
           <div className="text-xs text-gray-500 mb-1">Total Value</div>
           <div className="text-2xl font-bold text-gray-900">
-            ${(data.totalValueUsd / 1e6).toFixed(2)}M
+            ${(vault.totalValue / 1e6).toFixed(2)}M
           </div>
         </div>
         <div className="p-4 bg-gray-50 rounded-lg">
           <div className="text-xs text-gray-500 mb-1">Liabilities</div>
           <div className="text-2xl font-bold text-gray-900">
-            ${(data.liabilitiesUsd / 1e6).toFixed(2)}M
+            ${(vault.liabilities / 1e6).toFixed(2)}M
           </div>
         </div>
       </div>
@@ -79,14 +98,14 @@ export function ReserveChart({ data, loading }: Props) {
           Asset Composition
         </div>
         <div className="flex h-8 rounded-lg overflow-hidden">
-          {data.composition.map((asset, i) => (
+          {vault.assets.map((asset, i) => (
             <div
               key={i}
               className={`${colors[i % colors.length]} flex items-center justify-center text-white text-xs font-medium`}
               style={{ width: `${asset.percentage}%` }}
-              title={`${asset.asset}: ${asset.percentage.toFixed(2)}%`}
+              title={`${asset.symbol}: ${asset.percentage.toFixed(2)}%`}
             >
-              {asset.percentage > 10 && asset.asset}
+              {asset.percentage > 10 && asset.symbol}
             </div>
           ))}
         </div>
@@ -94,15 +113,15 @@ export function ReserveChart({ data, loading }: Props) {
 
       {/* Asset List */}
       <div className="space-y-2">
-        {data.composition.map((asset, i) => (
+        {vault.assets.map((asset, i) => (
           <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center space-x-3">
               <div className={`w-3 h-3 rounded-full ${colors[i % colors.length]}`}></div>
-              <span className="font-medium text-gray-900">{asset.asset}</span>
+              <span className="font-medium text-gray-900">{asset.symbol}</span>
             </div>
             <div className="text-right">
               <div className="text-sm font-semibold text-gray-900">
-                ${(asset.amount / 1e6).toFixed(2)}M
+                ${(asset.valueUsd / 1e6).toFixed(2)}M
               </div>
               <div className="text-xs text-gray-500">
                 {asset.percentage.toFixed(2)}%
@@ -114,7 +133,7 @@ export function ReserveChart({ data, loading }: Props) {
 
       {/* Last Rebalance */}
       <div className="mt-4 pt-4 border-t text-xs text-gray-500">
-        Last rebalance: {new Date(data.lastRebalance).toLocaleString()}
+        Last rebalance: {new Date(vault.lastRebalance).toLocaleString()}
       </div>
     </div>
   );

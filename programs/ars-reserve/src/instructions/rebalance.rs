@@ -2,7 +2,6 @@ use anchor_lang::prelude::*;
 use crate::state::*;
 use crate::errors::ReserveError;
 use crate::instructions::initialize_vault::VAULT_SEED;
-use crate::utils::ReentrancyGuard;
 
 #[derive(Accounts)]
 pub struct Rebalance<'info> {
@@ -24,8 +23,9 @@ pub struct Rebalance<'info> {
 pub fn handler(ctx: Context<Rebalance>) -> Result<()> {
     let vault = &mut ctx.accounts.vault;
     
-    // Acquire reentrancy lock
-    let _guard = ReentrancyGuard::acquire(&mut vault.locked)?;
+    // Check and acquire reentrancy lock
+    require!(!vault.locked, ReserveError::ReentrancyDetected);
+    vault.locked = true;
     
     let clock = Clock::get()?;
     
@@ -57,7 +57,7 @@ pub fn handler(ctx: Context<Rebalance>) -> Result<()> {
     // 6. Verify VHR remains above threshold
     
     // Release lock
-    ReentrancyGuard::release(&mut vault.locked);
+    vault.locked = false;
     
     Ok(())
 }

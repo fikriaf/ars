@@ -1,9 +1,26 @@
 /**
  * Default API configuration
  */
-export const DEFAULT_API_URL = 'http://localhost:3000';
-export const DEFAULT_WS_URL = 'ws://localhost:3000';
+export const DEFAULT_API_URL = 'http://localhost:4000';
+export const DEFAULT_WS_URL = 'ws://localhost:4000';
 export const DEFAULT_TIMEOUT = 30000; // 30 seconds
+
+/**
+ * ARS Program IDs (Devnet)
+ * Update these after deploying to mainnet
+ */
+export const PROGRAM_IDS = {
+  DEVNET: {
+    ARS_CORE: '9JhnkugG8q9QG9LedUs2F93H9xJ9zSHcn5Zfm1uzF624',
+    ARS_RESERVE: '6ojet9MMHSZiXoZ3w4AM72EKzFe7cMgw2toCrtmBjEER',
+    ARS_TOKEN: '8Eh2foHjxgoHcQ69HPvGGijiLCXzncnB6bpTrRp94VoG',
+  },
+  MAINNET: {
+    ARS_CORE: '', // To be deployed
+    ARS_RESERVE: '', // To be deployed
+    ARS_TOKEN: '', // To be deployed
+  },
+} as const;
 
 /**
  * WebSocket event types

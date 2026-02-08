@@ -1,11 +1,11 @@
 import { useAPI } from '../hooks/useAPI';
 
 interface RevenueData {
-  daily: number;
-  monthly: number;
-  annual: number;
+  daily: string;
+  monthly: string;
+  annual: string;
   agentCount: number;
-  avgRevenuePerAgent: number;
+  avgFeePerAgent: string;
 }
 
 interface Props {
@@ -40,6 +40,11 @@ export function RevenueMetrics({ data, loading }: Props) {
     );
   }
 
+  const dailyRevenue = parseFloat(data.daily);
+  const monthlyRevenue = parseFloat(data.monthly);
+  const annualRevenue = parseFloat(data.annual);
+  const avgRevenuePerAgent = parseFloat(data.avgFeePerAgent);
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
       {/* Header */}
@@ -57,10 +62,10 @@ export function RevenueMetrics({ data, loading }: Props) {
         <div className="p-4 bg-green-50 rounded-lg">
           <div className="text-xs text-gray-600 mb-1">Daily Revenue</div>
           <div className="text-2xl font-bold text-green-600">
-            ${data.daily.toFixed(2)}
+            ${dailyRevenue.toFixed(2)}
           </div>
           <div className="text-xs text-gray-500 mt-1">
-            ${data.avgRevenuePerAgent.toFixed(2)} per agent
+            ${avgRevenuePerAgent.toFixed(2)} per agent
           </div>
         </div>
 
@@ -68,13 +73,13 @@ export function RevenueMetrics({ data, loading }: Props) {
           <div className="p-4 bg-gray-50 rounded-lg">
             <div className="text-xs text-gray-600 mb-1">Monthly</div>
             <div className="text-lg font-bold text-gray-900">
-              ${(data.monthly / 1000).toFixed(1)}K
+              ${(monthlyRevenue / 1000).toFixed(1)}K
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
             <div className="text-xs text-gray-600 mb-1">Annual</div>
             <div className="text-lg font-bold text-gray-900">
-              ${(data.annual / 1000).toFixed(1)}K
+              ${(annualRevenue / 1000).toFixed(1)}K
             </div>
           </div>
         </div>

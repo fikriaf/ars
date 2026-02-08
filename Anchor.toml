@@ -1,14 +1,14 @@
 [toolchain]
-anchor_version = "0.30.1"
+anchor_version = "0.31.0"
 
 [features]
 resolution = true
 skip-lint = false
 
 [programs.devnet]
-ars_core = "EpzmAas4F7XAWeHht7Yp3wTDcTciKLmXkhqaR5JhfCHE"
-ars_reserve = "yiUCxoup6Jh7pcUsyZ8zR93kA13ecQX6EDdSEkGapQx"
-ars_token = "9ABvYDxGzRErKe7Y4DECXJzLtKTeTabgkLjyTqv3P54j"
+ars_core = "srtj367mvvmoZQCx2w75DxkPHtYDzZ3fW8toirw9TUY"
+ars_reserve = "9n6ZD9ghr4HyP3AVdQfPefhgn9o9CxYJRpG1x9uWuVZf"
+ars_token = "93bqWFjr2NVyz1DhiwgFCYe938jeANKmk2TjUJ1Fk4My"
 
 [registry]
 url = "https://api.apr.dev"

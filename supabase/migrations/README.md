@@ -4,15 +4,17 @@ This directory contains SQL migration scripts for the ARS database schema.
 
 ## Migration Files
 
-### 001_add_revenue_and_staking.sql
+### 001_create_base_tables.sql
 - **Date**: 2026-02-04
-- **Description**: Adds tables for revenue tracking, agent staking, and enhanced oracle data
-- **Tables**: `ili_history`, `oracle_data`, `agent_transactions`
+- **Description**: Creates core ARS tables (base schema)
+- **Tables**: `ili_history`, `proposals`, `votes`, `agents`, `reserve_events`, `oracle_data`
+- **Note**: This is the foundation migration that must run first
 
-### 002_create_all_tables.sql
+### 002_add_revenue_and_staking.sql
 - **Date**: 2026-02-04
-- **Description**: Creates core ARS tables
-- **Tables**: `ili_history`, `proposals`, `votes`
+- **Description**: Adds tables for revenue tracking, agent staking, and transactions
+- **Tables**: `agent_transactions`, `revenue_events`, `revenue_distributions`, `agent_staking`, `sol_staking`, `oracle_query_fees`
+- **Modifies**: `agents` (adds staking columns), `proposals` (adds proposal_fee column)
 
 ### 003_create_stealth_addresses_table.sql
 - **Date**: 2026-02-04

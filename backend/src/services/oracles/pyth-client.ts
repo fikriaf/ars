@@ -80,12 +80,12 @@ export class PythClient {
       // Fetch latest price from Hermes
       const priceFeeds = await this.hermesClient.getLatestPriceUpdates([priceId]);
       
-      if (!priceFeeds || priceFeeds.parsed?.length === 0) {
+      if (!priceFeeds || !priceFeeds.parsed || priceFeeds.parsed.length === 0) {
         throw new Error(`No price data found for ${symbol}`);
       }
 
       const priceFeed = priceFeeds.parsed[0];
-      const price = priceFeed.price;
+      const price = priceFeed.price as any;
 
       // Calculate actual price with exponent
       const actualPrice = Number(price.price) * Math.pow(10, price.expo);
@@ -131,7 +131,7 @@ export class PythClient {
       }
 
       return priceFeeds.parsed.map((priceFeed, index) => {
-        const price = priceFeed.price;
+        const price = priceFeed.price as any;
         const symbol = feeds[index].symbol;
 
         const actualPrice = Number(price.price) * Math.pow(10, price.expo);

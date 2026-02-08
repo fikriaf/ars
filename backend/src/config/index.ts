@@ -32,6 +32,11 @@ export const config = {
   solana: {
     rpcUrl: process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com',
     network: process.env.SOLANA_NETWORK || 'devnet',
+    programs: {
+      arsCore: process.env.ARS_CORE_PROGRAM_ID || '',
+      arsReserve: process.env.ARS_RESERVE_PROGRAM_ID || '',
+      arsToken: process.env.ARS_TOKEN_PROGRAM_ID || '',
+    },
   },
   
   heliusApiKey: process.env.HELIUS_API_KEY || '',
@@ -56,6 +61,12 @@ export const config = {
     magicRouterUrl: process.env.MAGIC_ROUTER_URL || 'https://router.magicblock.gg',
     openRouterApiKey: process.env.OPENROUTER_API_KEY || '',
     openRouterReferer: process.env.OPENROUTER_REFERER || 'https://internet-capital-bank.com',
+    
+    // God Mode Plugin APIs (from plugin-god-mode)
+    luloApiKey: process.env.LULO_API_KEY || '',
+    messariApiKey: process.env.MESSARI_API_KEY || '',
+    bdsApiKey: process.env.BDS_API_KEY || '',
+    nextPublicBdsApiKey: process.env.NEXT_PUBLIC_BDS_API_KEY || '',
   },
   
   sipher: {

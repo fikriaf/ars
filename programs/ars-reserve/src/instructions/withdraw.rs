@@ -3,7 +3,6 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::state::*;
 use crate::errors::ReserveError;
 use crate::instructions::initialize_vault::VAULT_SEED;
-use crate::utils::ReentrancyGuard;
 
 #[derive(Accounts)]
 pub struct Withdraw<'info> {
@@ -38,8 +37,9 @@ pub fn handler(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
     
     let vault = &mut ctx.accounts.vault;
     
-    // Acquire reentrancy lock
-    let _guard = ReentrancyGuard::acquire(&mut vault.locked)?;
+    // Check and acquire reentrancy lock
+    require!(!vault.locked, ReserveError::ReentrancyDetected);
+    vault.locked = true;
     
     // Check VHR after withdrawal would still be above threshold
     let new_total_value = vault.total_value_usd
@@ -79,11 +79,11 @@ pub fn handler(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
     vault.vhr = new_vhr;
     
     msg!("Withdrawn {} tokens from vault", amount);
-    msg!("New vault total value: {} USD", vault.total_value_usd);
-    msg!("New VHR: {} bps", vault.vhr);
+    msg!("New vault total value: {} USD", new_total_value);
+    msg!("New VHR: {} bps", new_vhr);
     
     // Release lock
-    ReentrancyGuard::release(&mut vault.locked);
+    vault.locked = false;
     
     Ok(())
 }
