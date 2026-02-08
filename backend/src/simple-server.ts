@@ -7,11 +7,17 @@ import express from 'express';
 import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
+import { WebSocketServer, WebSocket } from 'ws';
+import { createServer } from 'http';
+import programsRouter from './routes/programs';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Create HTTP server
+const server = createServer(app);
 
 // Middleware
 app.use(cors());
@@ -27,6 +33,9 @@ const supabase = createClient(
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Smart contract programs routes
+app.use('/programs', programsRouter);
 
 // GET /ili/current
 app.get('/ili/current', async (req, res) => {
@@ -329,12 +338,70 @@ app.get('/history/policies', async (req, res) => {
   }
 });
 
+// GET /revenue/projections
+app.get('/revenue/projections', async (req, res) => {
+  try {
+    const { data } = await supabase
+      .from('revenue_events')
+      .select('amount_usd')
+      .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+    
+    const dailyRevenue = data?.reduce((sum, e) => sum + parseFloat(e.amount_usd), 0) || 0;
+    const avgRevenuePerAgent = dailyRevenue / 5; // Current 5 agents
+    
+    res.json({
+      at100Agents: {
+        dailyRevenue: avgRevenuePerAgent * 100,
+        monthlyRevenue: avgRevenuePerAgent * 100 * 30,
+        annualRevenue: avgRevenuePerAgent * 100 * 365,
+      },
+      at1000Agents: {
+        dailyRevenue: avgRevenuePerAgent * 1000,
+        monthlyRevenue: avgRevenuePerAgent * 1000 * 30,
+        annualRevenue: avgRevenuePerAgent * 1000 * 365,
+      },
+      at10000Agents: {
+        dailyRevenue: avgRevenuePerAgent * 10000,
+        monthlyRevenue: avgRevenuePerAgent * 10000 * 30,
+        annualRevenue: avgRevenuePerAgent * 10000 * 365,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /revenue/distributions
+app.get('/revenue/distributions', async (req, res) => {
+  try {
+    const { data } = await supabase
+      .from('revenue_events')
+      .select('timestamp, amount_usd')
+      .order('timestamp', { ascending: false })
+      .limit(10);
+    
+    const distributions = data?.map(e => ({
+      distribution_date: e.timestamp,
+      total_revenue: parseFloat(e.amount_usd),
+      buyback_burn: parseFloat(e.amount_usd) * 0.4,
+      staking_rewards: parseFloat(e.amount_usd) * 0.3,
+      development: parseFloat(e.amount_usd) * 0.2,
+      insurance_fund: parseFloat(e.amount_usd) * 0.1,
+    })) || [];
+    
+    res.json({ distributions });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('========================================');
   console.log('ARS Simple API Server');
   console.log('========================================');
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`WebSocket running on ws://localhost:${PORT}/ws`);
   console.log('');
   console.log('Available endpoints:');
   console.log('  GET  /health');
@@ -347,7 +414,142 @@ app.listen(PORT, () => {
   console.log('  GET  /proposals/:id');
   console.log('  GET  /revenue/current');
   console.log('  GET  /revenue/breakdown');
+  console.log('  GET  /revenue/projections');
+  console.log('  GET  /revenue/distributions');
   console.log('  GET  /agents/staking/metrics');
   console.log('  GET  /history/policies');
+  console.log('  WS   /ws (real-time updates)');
   console.log('========================================');
 });
+
+// WebSocket Server
+const wss = new WebSocketServer({ server, path: '/ws' });
+
+interface Client {
+  ws: WebSocket;
+  subscriptions: Set<string>;
+}
+
+const clients = new Set<Client>();
+
+wss.on('connection', (ws: WebSocket) => {
+  console.log('WebSocket client connected');
+  
+  const client: Client = {
+    ws,
+    subscriptions: new Set(),
+  };
+  
+  clients.add(client);
+
+  ws.on('message', (data: Buffer) => {
+    try {
+      const message = JSON.parse(data.toString());
+      
+      if (message.type === 'subscribe') {
+        client.subscriptions.add(message.channel);
+        console.log(`Client subscribed to: ${message.channel}`);
+        
+        // Send initial data
+        sendChannelData(client, message.channel);
+      } else if (message.type === 'unsubscribe') {
+        client.subscriptions.delete(message.channel);
+        console.log(`Client unsubscribed from: ${message.channel}`);
+      }
+    } catch (error) {
+      console.error('Error parsing WebSocket message:', error);
+    }
+  });
+
+  ws.on('close', () => {
+    console.log('WebSocket client disconnected');
+    clients.delete(client);
+  });
+
+  ws.on('error', (error) => {
+    console.error('WebSocket error:', error);
+  });
+
+  // Send welcome message
+  ws.send(JSON.stringify({
+    type: 'connected',
+    message: 'Connected to ARS WebSocket server',
+  }));
+});
+
+// Send data to specific channel
+async function sendChannelData(client: Client, channel: string) {
+  try {
+    let data;
+    
+    switch (channel) {
+      case 'ili':
+        const iliData = await supabase
+          .from('ili_history')
+          .select('*')
+          .order('timestamp', { ascending: false })
+          .limit(1)
+          .single();
+        
+        if (iliData.data) {
+          data = {
+            value: parseFloat(iliData.data.ili_value),
+            timestamp: new Date(iliData.data.timestamp).getTime(),
+            avgYield: parseFloat(iliData.data.avg_yield || '0'),
+            volatility: parseFloat(iliData.data.volatility || '0'),
+            tvl: parseFloat(iliData.data.tvl_usd || '0'),
+          };
+        }
+        break;
+        
+      case 'reserve':
+        const reserveData = await supabase
+          .from('reserve_events')
+          .select('*')
+          .order('timestamp', { ascending: false })
+          .limit(1)
+          .single();
+        
+        if (reserveData.data) {
+          const vhr = parseFloat(reserveData.data.vhr_after);
+          data = {
+            vhr,
+            lastUpdate: new Date(reserveData.data.timestamp).getTime(),
+          };
+        }
+        break;
+        
+      case 'revenue':
+        const revenueData = await supabase
+          .from('revenue_events')
+          .select('amount_usd')
+          .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        
+        const daily = revenueData.data?.reduce((sum, e) => sum + parseFloat(e.amount_usd), 0) || 0;
+        data = {
+          daily: daily.toFixed(2),
+          timestamp: Date.now(),
+        };
+        break;
+    }
+    
+    if (data && client.ws.readyState === WebSocket.OPEN) {
+      client.ws.send(JSON.stringify({
+        type: `${channel}_update`,
+        data,
+      }));
+    }
+  } catch (error) {
+    console.error(`Error sending ${channel} data:`, error);
+  }
+}
+
+// Broadcast updates to all subscribed clients every 5 seconds
+setInterval(() => {
+  clients.forEach(client => {
+    client.subscriptions.forEach(channel => {
+      sendChannelData(client, channel);
+    });
+  });
+}, 5000);
+

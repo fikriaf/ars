@@ -18,6 +18,7 @@
     "test:frontend": "npm run test --workspace=frontend",
     "deploy:devnet": "anchor deploy --provider.cluster devnet",
     "deploy:mainnet": "anchor deploy --provider.cluster mainnet",
+    "initialize": "ts-node scripts/initialize-programs.ts",
     "keys": "anchor keys list",
     "clean": "anchor clean && npm run clean --workspaces --if-present",
     "lint": "prettier --check .",
@@ -53,8 +54,10 @@
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.95.0",
     "@types/node": "^20.0.0",
+    "dotenv": "^17.2.4",
     "openclaw": "^0.0.1",
     "prettier": "^3.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.0.0"
   },
   "dependencies": {

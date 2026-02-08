@@ -7,12 +7,14 @@
     "dev": "nodemon src/index.ts",
     "dev:simple": "ts-node src/simple-server.ts",
     "seed": "ts-node src/seed-database.ts",
+    "populate": "ts-node src/scripts/populate-simple.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
     "@pythnetwork/hermes-client": "^2.1.0",
     "@solana/spl-token": "0.1.8",
     "@solana/web3.js": "^1.95.0",

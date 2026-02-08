@@ -1,12 +1,8 @@
 interface ICRData {
-  icr: number;
+  value: number;
   confidence: number;
-  timestamp: string;
-  sources: Array<{
-    protocol: string;
-    rate: number;
-    weight: number;
-  }>;
+  timestamp: number;
+  sources: string[];
 }
 
 interface Props {
@@ -38,8 +34,9 @@ export function ICRDisplay({ data, loading }: Props) {
     );
   }
 
-  const icrBps = data.icr;
-  const icrPercent = icrBps / 100;
+  const icrPercent = data.value;
+  const icrBps = icrPercent * 100;
+  const confidenceBps = data.confidence * 100;
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
@@ -49,7 +46,7 @@ export function ICRDisplay({ data, loading }: Props) {
           Internet Credit Rate (ICR)
         </h2>
         <span className="text-xs text-gray-500">
-          ±{data.confidence} bps
+          ±{confidenceBps.toFixed(0)} bps
         </span>
       </div>
 
@@ -60,7 +57,7 @@ export function ICRDisplay({ data, loading }: Props) {
             {icrPercent.toFixed(2)}%
           </div>
           <div className="text-sm text-gray-600">
-            {icrBps} basis points
+            {icrBps.toFixed(0)} basis points
           </div>
         </div>
       </div>
@@ -75,15 +72,15 @@ export function ICRDisplay({ data, loading }: Props) {
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 rounded-full bg-purple-500"></div>
               <span className="font-medium text-gray-900 capitalize">
-                {source.protocol}
+                {source}
               </span>
             </div>
             <div className="text-right">
               <div className="text-sm font-semibold text-gray-900">
-                {(source.rate / 100).toFixed(2)}%
+                {icrPercent.toFixed(2)}%
               </div>
               <div className="text-xs text-gray-500">
-                Weight: {(source.weight * 100).toFixed(0)}%
+                Weight: {(100 / data.sources.length).toFixed(0)}%
               </div>
             </div>
           </div>
@@ -95,7 +92,7 @@ export function ICRDisplay({ data, loading }: Props) {
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-600">Confidence Range</span>
           <span className="font-medium text-gray-900">
-            {((icrBps - data.confidence) / 100).toFixed(2)}% - {((icrBps + data.confidence) / 100).toFixed(2)}%
+            {(icrPercent - data.confidence).toFixed(2)}% - {(icrPercent + data.confidence).toFixed(2)}%
           </span>
         </div>
       </div>

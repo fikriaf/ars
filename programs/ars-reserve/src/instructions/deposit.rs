@@ -3,7 +3,6 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::state::*;
 use crate::errors::ReserveError;
 use crate::instructions::initialize_vault::VAULT_SEED;
-use crate::utils::ReentrancyGuard;
 
 #[derive(Accounts)]
 pub struct Deposit<'info> {
@@ -34,16 +33,17 @@ pub struct Deposit<'info> {
 pub fn handler(ctx: Context<Deposit>, amount: u64) -> Result<()> {
     require!(amount > 0, ReserveError::InvalidAmount);
     
-    let vault = &mut ctx.accounts.vault;
-    
-    // Acquire reentrancy lock
-    let _guard = ReentrancyGuard::acquire(&mut vault.locked)?;
-    
     // Validate user has sufficient balance
     require!(
         ctx.accounts.depositor_token_account.amount >= amount,
         ReserveError::InsufficientVaultBalance
     );
+    
+    let vault = &mut ctx.accounts.vault;
+    
+    // Check and acquire reentrancy lock
+    require!(!vault.locked, ReserveError::ReentrancyDetected);
+    vault.locked = true;
     
     // Transfer tokens from depositor to vault
     let cpi_accounts = Transfer {
@@ -66,7 +66,7 @@ pub fn handler(ctx: Context<Deposit>, amount: u64) -> Result<()> {
     msg!("New vault total value: {} USD", vault.total_value_usd);
     
     // Release lock
-    ReentrancyGuard::release(&mut vault.locked);
+    vault.locked = false;
     
     Ok(())
 }
