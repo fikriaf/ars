@@ -11,7 +11,7 @@ The OpenSanctions Dataset Integration provides comprehensive access to global sa
 
 ## Dataset Location
 
-**Local Path**: `C:\Users\raden\Documents\Hackathon\agentic-reserve-system\dataset\opensanctions\`
+**Local Path**: `.\agentic-reserve-system\dataset\opensanctions\`
 
 **Available Datasets**:
 - `opensanctions-full.jsonl` - Complete dataset with all entities
