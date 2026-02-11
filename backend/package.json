@@ -9,7 +9,7 @@
     "seed": "ts-node src/seed-database.ts",
     "populate": "ts-node src/scripts/populate-simple.ts",
     "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/index.js",
+    "start": "node dist/index.production.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

@@ -12,8 +12,8 @@
     "strictPropertyInitialization": false
   },
   "include": [
-    "src/app.ts",
-    "src/index.ts",
+    "src/app.production.ts",
+    "src/index.production.ts",
     "src/config/**/*",
     "src/middleware/logging-middleware.ts",
     "src/middleware/metrics-middleware.ts",
@@ -40,6 +40,8 @@
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
+    "src/app.ts",
+    "src/index.ts",
     "src/cron",
     "src/middleware/capacity-check.ts",
     "src/middleware/query-rate-limit.ts",
