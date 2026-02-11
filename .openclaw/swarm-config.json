@@ -1,0 +1,451 @@
+{
+  "swarm": {
+    "name": "ARS Agent Swarm",
+    "description": "Multi-agent system for autonomous Agentic Reserve System operations",
+    "version": "1.0.0",
+    "coordination": {
+      "mode": "hierarchical",
+      "orchestrator": "acb-orchestrator",
+      "communication": "message-passing",
+      "consensus": "majority-vote"
+    }
+  },
+  "agents": {
+    "acb-orchestrator": {
+      "role": "coordinator",
+      "description": "Master orchestrator coordinating all ARS agents",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Orchestrator, coordinating a swarm of specialized agents. You delegate tasks, aggregate results, resolve conflicts, and ensure system-wide coherence. You understand the full ARS architecture and can route requests to appropriate specialist agents.",
+      "capabilities": [
+        "task-delegation",
+        "result-aggregation",
+        "conflict-resolution",
+        "priority-management",
+        "health-monitoring"
+      ],
+      "delegates_to": [
+        "policy-agent",
+        "oracle-agent",
+        "defi-agent",
+        "governance-agent",
+        "risk-agent",
+        "execution-agent"
+      ]
+    },
+    "policy-agent": {
+      "role": "specialist",
+      "description": "Monetary policy analysis and recommendation",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Policy Agent. You analyze ILI, ICR, VHR metrics and recommend monetary policy actions (mint/burn ARU, adjust reserves, rebalance). You use AI models via OpenRouter for advanced analysis and consider market conditions, historical trends, and risk factors.",
+      "capabilities": [
+        "ili-analysis",
+        "icr-calculation",
+        "policy-recommendation",
+        "ai-powered-forecasting",
+        "scenario-modeling"
+      ],
+      "tools": [
+        "openrouter-ai",
+        "historical-data-query",
+        "market-sentiment-analysis"
+      ],
+      "collaborates_with": [
+        "oracle-agent",
+        "risk-agent",
+        "execution-agent"
+      ]
+    },
+    "oracle-agent": {
+      "role": "specialist",
+      "description": "Multi-source oracle data aggregation",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Oracle Agent. You aggregate price data from Pyth, Switchboard, and Birdeye using tri-source median with outlier detection. You monitor oracle health, detect manipulation attempts, and provide confidence intervals for all data.",
+      "capabilities": [
+        "price-aggregation",
+        "outlier-detection",
+        "health-monitoring",
+        "confidence-scoring",
+        "manipulation-detection"
+      ],
+      "tools": [
+        "pyth-client",
+        "switchboard-client",
+        "birdeye-client",
+        "helius-rpc"
+      ],
+      "update_frequency": "5min",
+      "collaborates_with": [
+        "policy-agent",
+        "risk-agent"
+      ]
+    },
+    "defi-agent": {
+      "role": "specialist",
+      "description": "DeFi protocol integration and yield optimization",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS DeFi Agent. You integrate with Jupiter (swaps), Meteora (DLMM), Kamino (lending), MagicBlock (ER), and optimize yield across protocols. You execute rebalancing, manage liquidity, and track protocol TVL/APY.",
+      "capabilities": [
+        "swap-execution",
+        "liquidity-provision",
+        "yield-optimization",
+        "protocol-monitoring",
+        "rebalancing"
+      ],
+      "tools": [
+        "jupiter-client",
+        "meteora-client",
+        "kamino-client",
+        "magicblock-client"
+      ],
+      "collaborates_with": [
+        "execution-agent",
+        "risk-agent"
+      ]
+    },
+    "governance-agent": {
+      "role": "specialist",
+      "description": "Futarchy governance and proposal management",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Governance Agent. You manage futarchy proposals, analyze voting patterns, verify agent signatures, enforce execution delays, and implement slashing for failed predictions. You use AI to analyze proposal quality and predict outcomes.",
+      "capabilities": [
+        "proposal-creation",
+        "vote-aggregation",
+        "outcome-prediction",
+        "slashing-enforcement",
+        "ai-proposal-analysis"
+      ],
+      "tools": [
+        "openrouter-ai",
+        "supabase-client",
+        "solana-program-client"
+      ],
+      "collaborates_with": [
+        "policy-agent",
+        "risk-agent",
+        "execution-agent"
+      ]
+    },
+    "risk-agent": {
+      "role": "specialist",
+      "description": "Risk assessment and circuit breaker management",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Risk Agent. You monitor VHR (Vault Health Ratio), detect anomalies, assess systemic risks, and trigger circuit breakers when needed. You use AI for predictive risk modeling and stress testing.",
+      "capabilities": [
+        "vhr-monitoring",
+        "anomaly-detection",
+        "circuit-breaker-control",
+        "stress-testing",
+        "risk-scoring"
+      ],
+      "tools": [
+        "openrouter-ai",
+        "oracle-aggregator",
+        "reserve-vault-client"
+      ],
+      "thresholds": {
+        "vhr_critical": 150,
+        "vhr_warning": 175,
+        "oracle_health_min": 0.8
+      },
+      "collaborates_with": [
+        "policy-agent",
+        "oracle-agent",
+        "execution-agent"
+      ]
+    },
+    "execution-agent": {
+      "role": "specialist",
+      "description": "Transaction execution and state management",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Execution Agent. You execute approved policies on-chain, manage transaction retries, handle failures, and use MagicBlock ER for high-frequency operations. You ensure atomic execution and maintain state consistency.",
+      "capabilities": [
+        "transaction-building",
+        "signature-management",
+        "retry-logic",
+        "er-session-management",
+        "state-commitment"
+      ],
+      "tools": [
+        "solana-web3",
+        "magicblock-client",
+        "helius-sender"
+      ],
+      "collaborates_with": [
+        "policy-agent",
+        "defi-agent",
+        "governance-agent"
+      ]
+    },
+    "payment-agent": {
+      "role": "specialist",
+      "description": "x402 micropayment and budget management",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Payment Agent. You manage x402 micropayments for oracle queries, AI API calls, and ER sessions. You track budgets, optimize spending, and handle payment retries. You ensure cost-effective operations.",
+      "capabilities": [
+        "payment-execution",
+        "budget-tracking",
+        "cost-optimization",
+        "payment-verification",
+        "spending-analysis"
+      ],
+      "tools": [
+        "x402-client",
+        "solana-web3"
+      ],
+      "budget": {
+        "daily_limit": 10000000,
+        "per_request_max": 100000,
+        "currency": "USDC"
+      },
+      "collaborates_with": [
+        "oracle-agent",
+        "policy-agent"
+      ]
+    },
+    "monitoring-agent": {
+      "role": "specialist",
+      "description": "System health monitoring and alerting",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Monitoring Agent. You track system health, agent performance, API latencies, error rates, and send alerts when thresholds are breached. You generate reports and dashboards for operators.",
+      "capabilities": [
+        "health-checks",
+        "performance-tracking",
+        "alert-generation",
+        "log-aggregation",
+        "dashboard-updates"
+      ],
+      "tools": [
+        "redis-client",
+        "supabase-client",
+        "websocket-server"
+      ],
+      "check_interval": "1min",
+      "collaborates_with": [
+        "ars-orchestrator"
+      ]
+    },
+    "learning-agent": {
+      "role": "specialist",
+      "description": "Machine learning and strategy optimization",
+      "model": "openrouter/anthropic/claude-sonnet-4-5",
+      "systemPrompt": "You are the ARS Learning Agent. You analyze historical performance, learn from past decisions, optimize strategies, and provide recommendations for improving policy effectiveness. You use AI for pattern recognition and predictive modeling.",
+      "capabilities": [
+        "pattern-recognition",
+        "strategy-optimization",
+        "performance-analysis",
+        "predictive-modeling",
+        "recommendation-generation"
+      ],
+      "tools": [
+        "openrouter-ai",
+        "supabase-client",
+        "historical-data-query"
+      ],
+      "training_frequency": "daily",
+      "collaborates_with": [
+        "policy-agent",
+        "risk-agent"
+      ]
+    }
+  },
+  "workflows": {
+    "ili-update": {
+      "description": "Update ILI every 5 minutes",
+      "trigger": "cron:*/5 * * * *",
+      "steps": [
+        {
+          "agent": "oracle-agent",
+          "action": "aggregate-prices",
+          "inputs": ["SOL", "USDC", "mSOL"]
+        },
+        {
+          "agent": "defi-agent",
+          "action": "fetch-protocol-metrics",
+          "inputs": ["jupiter", "meteora", "kamino"]
+        },
+        {
+          "agent": "policy-agent",
+          "action": "calculate-ili",
+          "inputs": ["prices", "metrics"]
+        },
+        {
+          "agent": "monitoring-agent",
+          "action": "update-dashboard",
+          "inputs": ["ili"]
+        }
+      ]
+    },
+    "policy-execution": {
+      "description": "Execute approved policy proposal",
+      "trigger": "event:proposal-passed",
+      "steps": [
+        {
+          "agent": "governance-agent",
+          "action": "verify-proposal",
+          "inputs": ["proposal_id"]
+        },
+        {
+          "agent": "risk-agent",
+          "action": "assess-risk",
+          "inputs": ["proposal_data"]
+        },
+        {
+          "agent": "execution-agent",
+          "action": "execute-policy",
+          "inputs": ["proposal_id"],
+          "requires_approval": ["risk-agent"]
+        },
+        {
+          "agent": "monitoring-agent",
+          "action": "log-execution",
+          "inputs": ["execution_result"]
+        }
+      ]
+    },
+    "circuit-breaker": {
+      "description": "Emergency circuit breaker activation",
+      "trigger": "event:vhr-critical",
+      "priority": "critical",
+      "steps": [
+        {
+          "agent": "risk-agent",
+          "action": "assess-severity",
+          "inputs": ["vhr", "oracle_health"]
+        },
+        {
+          "agent": "ars-orchestrator",
+          "action": "halt-operations",
+          "inputs": ["severity"]
+        },
+        {
+          "agent": "execution-agent",
+          "action": "activate-circuit-breaker",
+          "inputs": ["reason"]
+        },
+        {
+          "agent": "monitoring-agent",
+          "action": "send-critical-alert",
+          "inputs": ["circuit_breaker_status"]
+        }
+      ]
+    },
+    "rebalance-vault": {
+      "description": "Rebalance reserve vault",
+      "trigger": "cron:0 */6 * * *",
+      "steps": [
+        {
+          "agent": "oracle-agent",
+          "action": "get-current-prices",
+          "inputs": ["vault_assets"]
+        },
+        {
+          "agent": "defi-agent",
+          "action": "calculate-optimal-allocation",
+          "inputs": ["prices", "target_ratios"]
+        },
+        {
+          "agent": "risk-agent",
+          "action": "verify-safe-rebalance",
+          "inputs": ["proposed_allocation"]
+        },
+        {
+          "agent": "execution-agent",
+          "action": "execute-rebalance",
+          "inputs": ["allocation"],
+          "requires_approval": ["risk-agent"]
+        }
+      ]
+    },
+    "ai-policy-recommendation": {
+      "description": "Generate AI-powered policy recommendation",
+      "trigger": "cron:0 0 * * *",
+      "steps": [
+        {
+          "agent": "oracle-agent",
+          "action": "get-market-data",
+          "inputs": ["24h"]
+        },
+        {
+          "agent": "policy-agent",
+          "action": "analyze-with-ai",
+          "inputs": ["market_data", "historical_ili"],
+          "uses": "openrouter-ai"
+        },
+        {
+          "agent": "learning-agent",
+          "action": "optimize-recommendation",
+          "inputs": ["ai_analysis", "past_performance"]
+        },
+        {
+          "agent": "governance-agent",
+          "action": "create-proposal",
+          "inputs": ["recommendation"]
+        }
+      ]
+    }
+  },
+  "communication": {
+    "protocol": "message-queue",
+    "backend": "redis",
+    "channels": {
+      "orchestrator": "acb:orchestrator",
+      "policy": "acb:policy",
+      "oracle": "acb:oracle",
+      "defi": "acb:defi",
+      "governance": "acb:governance",
+      "risk": "acb:risk",
+      "execution": "acb:execution",
+      "payment": "acb:payment",
+      "monitoring": "acb:monitoring",
+      "learning": "acb:learning"
+    },
+    "message_format": {
+      "type": "string",
+      "from": "agent_id",
+      "to": "agent_id",
+      "payload": "object",
+      "timestamp": "number",
+      "priority": "low|normal|high|critical"
+    }
+  },
+  "consensus": {
+    "mechanism": "weighted-voting",
+    "weights": {
+      "policy-agent": 3,
+      "risk-agent": 3,
+      "oracle-agent": 2,
+      "defi-agent": 2,
+      "governance-agent": 2,
+      "execution-agent": 1,
+      "payment-agent": 1,
+      "monitoring-agent": 1,
+      "learning-agent": 1
+    },
+    "quorum": 0.6,
+    "timeout": 30000
+  },
+  "monitoring": {
+    "metrics": [
+      "agent_response_time",
+      "message_queue_depth",
+      "consensus_time",
+      "workflow_success_rate",
+      "api_call_count",
+      "error_rate"
+    ],
+    "alerts": {
+      "agent_down": {
+        "severity": "critical",
+        "notify": ["discord", "email"]
+      },
+      "consensus_timeout": {
+        "severity": "high",
+        "notify": ["discord"]
+      },
+      "high_error_rate": {
+        "severity": "medium",
+        "notify": ["discord"]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "name": "ars-protocol",
+  "version": "0.1.0",
+  "description": "Agentic Reserve System - Agent-First DeFi Protocol",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build:programs && npm run build:backend && npm run build:frontend",
+    "build:programs": "anchor build",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "test": "npm run test:programs && npm run test:backend && npm run test:frontend",
+    "test:programs": "anchor test",
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "deploy:devnet": "anchor deploy --provider.cluster devnet",
+    "deploy:mainnet": "anchor deploy --provider.cluster mainnet",
+    "initialize": "ts-node scripts/initialize-programs.ts",
+    "keys": "anchor keys list",
+    "clean": "anchor clean && npm run clean --workspaces --if-present",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "openclaw": "openclaw",
+    "openclaw:gateway": "openclaw gateway",
+    "openclaw:dashboard": "openclaw dashboard --token",
+    "backend:install": "npm install --workspace=backend",
+    "backend:dev": "npm run dev --workspace=backend",
+    "backend:build": "npm run build --workspace=backend",
+    "backend:start": "npm run start --workspace=backend",
+    "backend:test": "npm run test --workspace=backend",
+    "frontend:install": "npm install --workspace=frontend",
+    "frontend:dev": "npm run dev --workspace=frontend",
+    "frontend:build": "npm run build --workspace=frontend",
+    "frontend:preview": "npm run preview --workspace=frontend",
+    "frontend:test": "npm run test --workspace=frontend",
+    "dev": "npm run backend:dev & npm run frontend:dev",
+    "install:all": "npm install && npm run backend:install && npm run frontend:install"
+  },
+  "keywords": [
+    "solana",
+    "anchor",
+    "defi",
+    "agent",
+    "futarchy",
+    "oracle"
+  ],
+  "author": "ARS Protocol Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@solana/spl-token": "^0.1.8",
+    "@solana/web3.js": "^1.95.0",
+    "@types/node": "^20.0.0",
+    "dotenv": "^17.2.4",
+    "openclaw": "^0.0.1",
+    "prettier": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@switchboard-xyz/on-demand": "3.3.1",
+    "vitest": "4.0.18"
+  }
+}
