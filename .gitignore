@@ -56,4 +56,6 @@ target/
 # Temporary files
 tmp/
 temp/
+temp-compare/
 *.tmp
+COMPARISON_REPORT.md
